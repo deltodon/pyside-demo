@@ -1,6 +1,8 @@
 import sys
+import os
 from PySide6.QtWidgets import QApplication
-from gui import MainWindow
+
+from pyside_demo.gui.window import MainWindow
 
 
 def main():
@@ -8,7 +10,6 @@ def main():
     window = MainWindow()
     window.show()
     sys.exit(app.exec())
-
 
 if __name__ == "__main__":
     main()
