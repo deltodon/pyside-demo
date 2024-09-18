@@ -32,8 +32,8 @@ classifiers = [
 python = ">=3.9,<3.13"
 pyside6 = "^6.7.2"
 sqlalchemy = "^2.0.23"
-psycopg2 = "^2.9.9"
 requests = "^2.31.0"
+psycopg2-binary = "^2.9.9"
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.8.0"
