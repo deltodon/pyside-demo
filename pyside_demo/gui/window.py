@@ -1,17 +1,17 @@
-from PySide6.QtWidgets import (
-    QMainWindow,
-    QWidget,
-    QVBoxLayout,
-    QHBoxLayout,
-    QPushButton,
-    QLineEdit,
-    QTextEdit,
-    QListWidget,
-    QMessageBox,
-    QListWidgetItem,
-    QStyle
-)
 from PySide6.QtCore import Qt
+from PySide6.QtWidgets import (
+    QHBoxLayout,
+    QLineEdit,
+    QListWidget,
+    QListWidgetItem,
+    QMainWindow,
+    QMessageBox,
+    QPushButton,
+    QStyle,
+    QTextEdit,
+    QVBoxLayout,
+    QWidget,
+)
 
 from pyside_demo.db.database import Database, SyncStatus
 from pyside_demo.gui.dialog import ConflictResolutionDialog
@@ -29,7 +29,9 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("PySide Demo")
-        icon = self.style().standardIcon(QStyle.StandardPixmap.SP_BrowserReload)
+        icon = self.style().standardIcon(
+            QStyle.StandardPixmap.SP_BrowserReload
+        )
         self.setWindowIcon(icon)
         self.setGeometry(100, 100, 800, 600)
 
@@ -85,19 +87,23 @@ class MainWindow(QMainWindow):
                 if selected_items:
                     item_id = selected_items[0].data(Qt.UserRole)
                     self.db.update_item(item_id, name, description)
-            
+
             self.name_input.clear()
             self.description_input.clear()
             self.add_edit_button.setText("Add Item")
             self.load_items()
         else:
-            QMessageBox.warning(self, "Input Error", "Please enter both name and description.")
+            QMessageBox.warning(
+                self, "Input Error", "Please enter both name and description."
+            )
 
     def load_items(self):
         self.item_list.clear()
         items = self.db.get_items()
         for item in items:
-            list_item = QListWidgetItem(f"{item.name} ({item.sync_status.value})")
+            list_item = QListWidgetItem(
+                f"{item.name} ({item.sync_status.value})"
+            )
             list_item.setData(Qt.UserRole, item.id)
             self.item_list.addItem(list_item)
 
@@ -112,7 +118,8 @@ class MainWindow(QMainWindow):
         session.close()
 
     def sync_with_postgresql(self):
-        # In a real application, you would want to get these from a configuration file or environment variables
+        # In a real application, you would want to get these
+        # from a configuration file or environment variables
         host = "localhost"
         database = "your_database"
         user = "your_username"
@@ -121,16 +128,24 @@ class MainWindow(QMainWindow):
         self.db.sync_with_postgresql(host, database, user, password)
         self.resolve_conflicts()
         self.load_items()
-        QMessageBox.information(self, "Sync Status", "Synchronization completed. Check console for details.")
+        QMessageBox.information(
+            self,
+            "Sync Status",
+            "Synchronization completed. Check console for details.",
+        )
 
     def resolve_conflicts(self):
         session = self.db.Session()
-        conflict_items = session.query(self.db.Item).filter_by(sync_status=SyncStatus.CONFLICT).all()
-        
+        conflict_items = (
+            session.query(self.db.Item)
+            .filter_by(sync_status=SyncStatus.CONFLICT)
+            .all()
+        )
+
         for item in conflict_items:
             dialog = ConflictResolutionDialog(item)
             if dialog.exec_():
                 resolution = dialog.get_resolution()
                 self.db.resolve_conflict(item.id, resolution)
-        
+
         session.close()

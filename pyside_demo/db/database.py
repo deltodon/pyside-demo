@@ -1,27 +1,20 @@
-import os
-import requests
-from sqlalchemy import (
-    create_engine,
-    Column,
-    Integer,
-    String,
-    DateTime,
-    Enum as SQLAlchemyEnum
-)
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from datetime import datetime
-import psycopg2
 import uuid
+from datetime import datetime
 from enum import Enum as PyEnum
 
-from pyside_demo.db.sql import (
-    SQL_CREATE_TABLE,
-    SQL_UPDATE_OR_INSERT_ITEM,
-    SQL_FETCH_ITEMS,
-    SQL_CHECK_FOR_CONFLICTS
-)
+import psycopg2
+import requests
+from sqlalchemy import Column, DateTime
+from sqlalchemy import Enum as SQLAlchemyEnum
+from sqlalchemy import Integer, String, create_engine
+from sqlalchemy.orm import declarative_base, sessionmaker
 
+from pyside_demo.db.sql import (
+    SQL_CHECK_FOR_CONFLICTS,
+    SQL_CREATE_TABLE,
+    SQL_FETCH_ITEMS,
+    SQL_UPDATE_OR_INSERT_ITEM,
+)
 
 Base = declarative_base()
 
@@ -34,6 +27,7 @@ class SyncStatus(PyEnum):
     DELETED = "deleted"
     CONFLICT = "conflict"
 
+
 class Item(Base):
     __tablename__ = "items"
 
@@ -41,9 +35,14 @@ class Item(Base):
     name = Column(String)
     description = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = Column(
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+    )
     version = Column(Integer, default=1)
-    sync_status = Column(SQLAlchemyEnum(SyncStatus), default=SyncStatus.MODIFIED)
+    sync_status = Column(
+        SQLAlchemyEnum(SyncStatus), default=SyncStatus.MODIFIED
+    )
+
 
 class Database:
     def __init__(self):
@@ -79,13 +78,17 @@ class Database:
 
     def get_items(self):
         session = self.Session()
-        items = session.query(Item).filter(Item.sync_status != SyncStatus.DELETED).all()
+        items = (
+            session.query(Item)
+            .filter(Item.sync_status != SyncStatus.DELETED)
+            .all()
+        )
         session.close()
         return items
 
     def is_online(self):
         try:
-            requests.get('https://www.google.com', timeout=5)
+            requests.get("https://www.google.com", timeout=5)
             return True
         except requests.ConnectionError:
             return False
@@ -95,12 +98,11 @@ class Database:
             print("Not online, can't sync with PostgreSQL")
             return
 
+        conn = None
+        cur = None
         try:
             conn = psycopg2.connect(
-                host=host,
-                database=database,
-                user=user,
-                password=password
+                host=host, database=database, user=user, password=password
             )
             cur = conn.cursor()
 
@@ -116,7 +118,7 @@ class Database:
                     # Check for conflicts
                     cur.execute(SQL_CHECK_FOR_CONFLICTS, (item.id,))
                     result = cur.fetchone()
-                    
+
                     if result and result[0] > item.version:
                         # Conflict detected
                         item.sync_status = SyncStatus.CONFLICT
@@ -131,16 +133,19 @@ class Database:
                                 item.created_at,
                                 item.updated_at,
                                 item.version,
-                                "synced"
-                            )
+                                "synced",
+                            ),
                         )
                         item.sync_status = SyncStatus.SYNCED
 
                 elif item.sync_status == SyncStatus.DELETED:
                     # Delete item from PostgreSQL
-                    cur.execute('''
+                    cur.execute(
+                        """
                         DELETE FROM items WHERE id = %s
-                    ''', (item.id,))
+                    """,
+                        (item.id,),
+                    )
 
             # Fetch items from PostgreSQL that are not in local database
             cur.execute(SQL_FETCH_ITEMS)
@@ -148,7 +153,9 @@ class Database:
 
             session = self.Session()
             for pg_item in pg_items:
-                local_item = session.query(Item).filter_by(id=pg_item[0]).first()
+                local_item = (
+                    session.query(Item).filter_by(id=pg_item[0]).first()
+                )
                 if not local_item:
                     new_item = Item(
                         id=pg_item[0],
@@ -157,42 +164,48 @@ class Database:
                         created_at=pg_item[3],
                         updated_at=pg_item[4],
                         version=pg_item[5],
-                        sync_status=SyncStatus.SYNCED
+                        sync_status=SyncStatus.SYNCED,
                     )
                     session.add(new_item)
 
             session.commit()
             session.close()
 
-            conn.commit()
             print("Sync with PostgreSQL completed successfully")
 
         except Exception as e:
             print(f"Error syncing with PostgreSQL: {e}")
+            # Re-raise the exception to ensure
+            # the test fails if an error occurs
+            raise
 
         finally:
             if conn:
-                cur.close()
+                if cur:
+                    cur.close()
+                # Moved the commit here to ensure it's always called
+                conn.commit()
                 conn.close()
 
     def resolve_conflict(self, item_id, resolution_choice):
         session = self.Session()
         item = session.query(Item).filter_by(id=item_id).first()
         if item and item.sync_status == SyncStatus.CONFLICT:
-            if resolution_choice == 'local':
+            if resolution_choice == "local":
                 item.sync_status = SyncStatus.MODIFIED
-            elif resolution_choice == 'remote':
+            elif resolution_choice == "remote":
                 # Fetch the latest version from PostgreSQL and update local
                 # This part would require a connection to PostgreSQL
                 pass
             session.commit()
         session.close()
 
+
 # Usage example:
 # db = Database()
 # db.add_item("Test Item", "This is a test item")
 # items = db.get_items()
 # for item in items:
-#     print(f"Item: {item.name}, Description: {item.description}, Status: {item.sync_status}")
+#     print(f"Item: {item.name}, Description: {item.description}, Status: {item.sync_status}")  # noqa: E501
 # db.sync_with_postgresql("localhost", "your_db", "your_user", "your_password")
 # db.resolve_conflict(item_id, 'local')  # or 'remote'

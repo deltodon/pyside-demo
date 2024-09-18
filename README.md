@@ -1,5 +1,18 @@
 # PySide Demo
 
+* [Overview](#overview)
+* [Features](#features)
+* [Prerequisites](#prerequisites)
+* [Installation](#installation)
+* [Configuration](#configuration)
+* [Usage](#usage)
+* [Synchronization Process](#synchronization-process)
+* [Conflict Resolution](#conflict-resolution)
+* [Data Model](#data-model)
+* [Contributing](#contributing)
+
+## Overview
+
 This application is a PySide6-based GUI that demonstrates an offline-first approach with PostgreSQL synchronization capabilities.
 It allows users to manage items locally and synchronize them with a remote PostgreSQL database when an internet connection is available.
 
@@ -29,7 +42,13 @@ It allows users to manage items locally and synchronize them with a remote Postg
 2. Install dependencies using Poetry:
 
    ```bash
-   poetry install
+   poetry install 
+   ```
+
+3. Install pre-commit hooks (optional):
+
+   ```bash
+   poetry run pre-commit install
    ```
 
 ## Configuration
@@ -69,6 +88,12 @@ password = "your_password"
    * Click the "Sync with PostgreSQL" button to initiate synchronization
    * If conflicts are detected, a dialog will appear for each conflict, allowing you to choose between the local and remote versions
 
+5. Run unit tests:
+
+   ```bash
+   poetry run python -m pytest -v
+   ```
+
 ## Synchronization Process
 
 The synchronization process follows these steps:
@@ -103,7 +128,3 @@ Items have the following properties:
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the MIT License.
