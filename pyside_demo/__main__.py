@@ -1,11 +1,12 @@
 import sys
-import os
+
 from PySide6.QtWidgets import QApplication
 
-from pyside_demo.gui.window import MainWindow, NewUiMainWindow
 from pyside_demo.gui.theme import set_dark_mode
+from pyside_demo.gui.window import MainWindow  # NewUiMainWindow
 
 # sys.argv += ['-platform', 'windows:darkmode=2']
+
 
 def main():
     app = QApplication(sys.argv)

@@ -1,5 +1,3 @@
-
-
 SQL_CREATE_TABLE: str = """
 CREATE TABLE IF NOT EXISTS items (
     id VARCHAR(255) PRIMARY KEY,
@@ -13,7 +11,8 @@ CREATE TABLE IF NOT EXISTS items (
 """
 
 SQL_UPDATE_OR_INSERT_ITEM: str = """
-INSERT INTO items (id, name, description, created_at, updated_at, version, sync_status)
+INSERT INTO items (id, name, description, created_at,
+                   updated_at, version, sync_status)
 VALUES (%s, %s, %s, %s, %s, %s, %s)
 ON CONFLICT (id) DO UPDATE
 SET name = EXCLUDED.name,

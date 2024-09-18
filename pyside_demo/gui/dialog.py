@@ -1,10 +1,10 @@
 from PySide6.QtWidgets import (
-    QVBoxLayout,
-    QPushButton,
+    QButtonGroup,
     QDialog,
     QLabel,
+    QPushButton,
     QRadioButton,
-    QButtonGroup,
+    QVBoxLayout,
 )
 
 
@@ -19,7 +19,9 @@ class ConflictResolutionDialog(QDialog):
     def init_ui(self):
         layout = QVBoxLayout()
 
-        layout.addWidget(QLabel(f"Conflict detected for item: {self.item.name}"))
+        layout.addWidget(
+            QLabel(f"Conflict detected for item: {self.item.name}")
+        )
         layout.addWidget(QLabel("Choose resolution:"))
 
         self.local_radio = QRadioButton("Keep local version")
@@ -40,7 +42,7 @@ class ConflictResolutionDialog(QDialog):
 
     def get_resolution(self):
         if self.local_radio.isChecked():
-            return 'local'
+            return "local"
         elif self.remote_radio.isChecked():
-            return 'remote'
+            return "remote"
         return None

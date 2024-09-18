@@ -42,6 +42,7 @@ isort = "^5.13.2"
 flake8 = "^7.1.1"
 pymarkdownlnt = "^0.9.23"
 pytest = "^8.3.3"
+flake8-pyproject = "^1.2.3"
 
 
 [tool.black]
@@ -51,6 +52,12 @@ line-length = 79
 [tool.isort]
 profile = "black"
 line_length = 79
+
+
+[tool.flake8]
+exclude = [
+    'ui_mainwindow.py',
+]
 
 
 [tool.pymarkdown]
