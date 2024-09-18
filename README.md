@@ -94,6 +94,12 @@ password = "your_password"
    poetry run python -m pytest -v
    ```
 
+6. Run mypy test:
+
+   ```bash
+   poetry run mypy .
+   ```
+
 ## Synchronization Process
 
 The synchronization process follows these steps:
