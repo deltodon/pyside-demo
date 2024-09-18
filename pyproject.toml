@@ -43,27 +43,33 @@ flake8 = "^7.1.1"
 pymarkdownlnt = "^0.9.23"
 pytest = "^8.3.3"
 flake8-pyproject = "^1.2.3"
-
+mypy = "^1.11.2"
+types-psycopg2 = "^2.9.21.20240819"
+types-requests = "^2.32.0.20240914"
+pyside6-stubs = "^6.4.2.0"
 
 [tool.black]
 line-length = 79
 
-
 [tool.isort]
 profile = "black"
 line_length = 79
-
 
 [tool.flake8]
 exclude = [
     'ui_mainwindow.py',
 ]
 
-
 [tool.pymarkdown]
 plugins.line-length.enabled = false
 plugins.header-increment.enabled = false
 
+[tool.mypy]
+disable_error_code = "attr-defined"
+explicit_package_bases = true
+exclude = [
+    'ui_mainwindow.py',
+]
 
 [build-system]
 requires = ["poetry-core"]

@@ -17,6 +17,11 @@ repos:
       entry: poetry run flake8
       language: system
       types: [file, python]
+    - id: mypy
+      name: mypy
+      entry: poetry run mypy
+      language: system
+      types: [file, python]
     - id: pymarkdown
       name: pymarkdown
       entry: poetry run pymarkdown scan

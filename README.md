@@ -94,6 +94,24 @@ password = "your_password"
    poetry run python -m pytest -v
    ```
 
+6. Run mypy test:
+
+   ```bash
+   poetry run mypy pyside_demo
+   ```
+
+7. Run all lint tests
+
+   ```bash
+   poetry run pre-commit run --all-files
+   ```
+
+8. Run mypy test with pre-commit:
+
+   ```bash
+   poetry run pre-commit run mypy --all-files
+   ```
+
 ## Synchronization Process
 
 The synchronization process follows these steps:
