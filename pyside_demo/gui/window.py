@@ -8,19 +8,29 @@ from PySide6.QtWidgets import (
     QTextEdit,
     QListWidget,
     QMessageBox,
-    QListWidgetItem
+    QListWidgetItem,
+    QStyle
 )
 from PySide6.QtCore import Qt
 
 from pyside_demo.db.database import Database, SyncStatus
 from pyside_demo.gui.dialog import ConflictResolutionDialog
+from pyside_demo.gui.ui_mainwindow import Ui_MainWindow
 
+
+class NewUiMainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self._ui = Ui_MainWindow()
+        self._ui.setupUi(self)
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("PySide Demo")
+        icon = self.style().standardIcon(QStyle.StandardPixmap.SP_BrowserReload)
+        self.setWindowIcon(icon)
         self.setGeometry(100, 100, 800, 600)
 
         self.db = Database()
