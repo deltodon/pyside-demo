@@ -1,7 +1,13 @@
-# TODO: refactor the code
 import os
 import requests
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, Enum as SQLAlchemyEnum
+from sqlalchemy import (
+    create_engine,
+    Column,
+    Integer,
+    String,
+    DateTime,
+    Enum as SQLAlchemyEnum
+)
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
