@@ -32,13 +32,15 @@ jobs:
           virtualenvs-in-project: true
       - name: Install dependencies
         run: |
-          poetry install
+          poetry install --no-interaction
         shell: bash
       - name: Lint code
         run: |
+          source $VENV
           poetry run pre-commit run --all-files
         shell: bash
       - name: Test code
         run: |
+          source $VENV
           poetry run python -m pytest -v
         shell: bash
