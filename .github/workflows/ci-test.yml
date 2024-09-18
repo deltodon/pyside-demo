@@ -39,5 +39,5 @@ jobs:
         shell: bash
       - name: Test code
         run: |
-          poetry run python -m pytest
+          poetry run python -m pytest -v
         shell: bash

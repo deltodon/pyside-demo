@@ -7,8 +7,7 @@ import requests
 from sqlalchemy import Column, DateTime
 from sqlalchemy import Enum as SQLAlchemyEnum
 from sqlalchemy import Integer, String, create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 from pyside_demo.db.sql import (
     SQL_CHECK_FOR_CONFLICTS,
@@ -99,6 +98,8 @@ class Database:
             print("Not online, can't sync with PostgreSQL")
             return
 
+        conn = None
+        cur = None
         try:
             conn = psycopg2.connect(
                 host=host, database=database, user=user, password=password
@@ -170,15 +171,20 @@ class Database:
             session.commit()
             session.close()
 
-            conn.commit()
             print("Sync with PostgreSQL completed successfully")
 
         except Exception as e:
             print(f"Error syncing with PostgreSQL: {e}")
+            # Re-raise the exception to ensure
+            # the test fails if an error occurs
+            raise
 
         finally:
             if conn:
-                cur.close()
+                if cur:
+                    cur.close()
+                # Moved the commit here to ensure it's always called
+                conn.commit()
                 conn.close()
 
     def resolve_conflict(self, item_id, resolution_choice):

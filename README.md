@@ -42,7 +42,7 @@ It allows users to manage items locally and synchronize them with a remote Postg
 2. Install dependencies using Poetry:
 
    ```bash
-   poetry installgit add 
+   poetry install 
    ```
 
 3. Install pre-commit hooks (optional):
@@ -87,6 +87,12 @@ password = "your_password"
 4. Synchronize with PostgreSQL:
    * Click the "Sync with PostgreSQL" button to initiate synchronization
    * If conflicts are detected, a dialog will appear for each conflict, allowing you to choose between the local and remote versions
+
+5. Run unit tests:
+
+   ```bash
+   poetry run python -m pytest -v
+   ```
 
 ## Synchronization Process
 
