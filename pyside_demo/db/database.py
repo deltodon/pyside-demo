@@ -7,7 +7,7 @@ import requests
 from sqlalchemy import Column, DateTime
 from sqlalchemy import Enum as SQLAlchemyEnum
 from sqlalchemy import Integer, String, create_engine
-from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 from pyside_demo.db.sql import (
     SQL_CHECK_FOR_CONFLICTS,
@@ -16,7 +16,10 @@ from pyside_demo.db.sql import (
     SQL_UPDATE_OR_INSERT_ITEM,
 )
 
-Base = declarative_base()
+
+class Base(DeclarativeBase):
+    pass
+
 
 SQLITE_FILE_NAME: str = "sqlite:///local.db"
 
@@ -31,15 +34,17 @@ class SyncStatus(PyEnum):
 class Item(Base):
     __tablename__ = "items"
 
-    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
-    name = Column(String)
-    description = Column(String)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(
+    id: Column = Column(
+        String, primary_key=True, default=lambda: str(uuid.uuid4())
+    )
+    name: Column = Column(String)
+    description: Column = Column(String)
+    created_at: Column = Column(DateTime, default=datetime.utcnow)
+    updated_at: Column = Column(
         DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )
-    version = Column(Integer, default=1)
-    sync_status = Column(
+    version: Column = Column(Integer, default=1)
+    sync_status: Column = Column(
         SQLAlchemyEnum(SyncStatus), default=SyncStatus.MODIFIED
     )
 

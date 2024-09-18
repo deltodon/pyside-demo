@@ -3,8 +3,8 @@ from PySide6.QtGui import QColor, QPalette
 from PySide6.QtWidgets import QApplication
 
 
-def set_dark_mode(app: QApplication = None):
-    dark_palette = app.palette()
+def set_dark_mode(app: QApplication):
+    dark_palette: QPalette = app.palette()
     dark_palette.setColor(QPalette.Window, QColor(53, 53, 53))
     dark_palette.setColor(QPalette.WindowText, Qt.white)
     dark_palette.setColor(
