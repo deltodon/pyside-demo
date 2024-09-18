@@ -22,6 +22,7 @@ repos:
       entry: poetry run mypy
       language: system
       types: [file, python]
+      args: ["pyside_demo"]
     - id: pymarkdown
       name: pymarkdown
       entry: poetry run pymarkdown scan

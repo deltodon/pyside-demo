@@ -97,7 +97,7 @@ password = "your_password"
 6. Run mypy test:
 
    ```bash
-   poetry run mypy .
+   poetry run mypy ./pyside_demo ./tests
    ```
 
 ## Synchronization Process

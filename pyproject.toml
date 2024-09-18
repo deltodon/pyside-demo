@@ -48,7 +48,6 @@ types-psycopg2 = "^2.9.21.20240819"
 types-requests = "^2.32.0.20240914"
 pyside6-stubs = "^6.4.2.0"
 
-
 [tool.black]
 line-length = 79
 
@@ -67,8 +66,10 @@ plugins.header-increment.enabled = false
 
 [tool.mypy]
 disable_error_code = "attr-defined"
-mypy_path = "./pyside_demo:./tests"
-
+explicit_package_bases = true
+exclude = [
+    'ui_mainwindow.py',
+]
 
 [build-system]
 requires = ["poetry-core"]
