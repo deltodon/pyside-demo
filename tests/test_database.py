@@ -19,11 +19,11 @@ def mock_session():
 
 
 @pytest.fixture
-def database():
-    with patch("pyside_demo.db.database.create_engine"), patch(
-        "pyside_demo.db.database.Base.metadata.create_all"
-    ), patch("pyside_demo.db.database.sessionmaker"):
-        return Database()
+@patch("pyside_demo.db.database.sessionmaker")
+@patch("pyside_demo.db.database.Base.metadata.create_all")
+@patch("pyside_demo.db.database.create_engine")
+def database(mock_create_engine, mock_create_all, mock_sessionmaker):
+    return Database()
 
 
 @pytest.fixture
@@ -49,133 +49,129 @@ def mock_item():
     return item
 
 
-@pytest.mark.usefixtures("database")
-class TestSyncWithPostgreSQL:
+@patch("pyside_demo.db.database.psycopg2.connect")
+@patch.object(Database, "is_online", return_value=True)
+@patch.object(Database, "get_items", return_value=[])
+def test_create_table(
+    mock_get_items,
+    mock_is_online,
+    mock_connect,
+    database,
+    mock_postgres_connection,
+):
+    mock_conn, mock_cur = mock_postgres_connection
+    mock_connect.return_value = mock_conn
 
-    def test_create_table(self, database, mock_postgres_connection):
-        mock_conn, mock_cur = mock_postgres_connection
+    database.sync_with_postgresql("host", "db", "user", "pass")
 
-        with patch(
-            "pyside_demo.db.database.psycopg2.connect", return_value=mock_conn
-        ), patch.object(
-            database, "is_online", return_value=True
-        ), patch.object(
-            database, "get_items", return_value=[]
-        ):
+    mock_cur.execute.assert_any_call(SQL_CREATE_TABLE)
 
-            database.sync_with_postgresql("host", "db", "user", "pass")
 
-        mock_cur.execute.assert_any_call(SQL_CREATE_TABLE)
+@patch("pyside_demo.db.database.psycopg2.connect")
+@patch.object(Database, "is_online", return_value=True)
+def test_check_for_conflicts(
+    mock_is_online, mock_connect, database, mock_postgres_connection, mock_item
+):
+    mock_conn, mock_cur = mock_postgres_connection
+    mock_connect.return_value = mock_conn
+    mock_cur.fetchone.return_value = (0,)  # Simulate no conflict
 
-    def test_check_for_conflicts(
-        self, database, mock_postgres_connection, mock_item
-    ):
-        mock_conn, mock_cur = mock_postgres_connection
-        mock_cur.fetchone.return_value = (0,)  # Simulate no conflict
+    with patch.object(database, "get_items", return_value=[mock_item]):
+        database.sync_with_postgresql("host", "db", "user", "pass")
 
-        with patch(
-            "pyside_demo.db.database.psycopg2.connect", return_value=mock_conn
-        ), patch.object(
-            database, "is_online", return_value=True
-        ), patch.object(
-            database, "get_items", return_value=[mock_item]
-        ):
+    mock_cur.execute.assert_any_call(SQL_CHECK_FOR_CONFLICTS, (mock_item.id,))
 
-            database.sync_with_postgresql("host", "db", "user", "pass")
 
-        mock_cur.execute.assert_any_call(
-            SQL_CHECK_FOR_CONFLICTS, (mock_item.id,)
-        )
+@patch("pyside_demo.db.database.psycopg2.connect")
+@patch.object(Database, "is_online", return_value=True)
+def test_update_or_insert_item(
+    mock_is_online, mock_connect, database, mock_postgres_connection, mock_item
+):
+    mock_conn, mock_cur = mock_postgres_connection
+    mock_connect.return_value = mock_conn
+    mock_cur.fetchone.return_value = (0,)  # Simulate no conflict
 
-    def test_update_or_insert_item(
-        self, database, mock_postgres_connection, mock_item
-    ):
-        mock_conn, mock_cur = mock_postgres_connection
-        mock_cur.fetchone.return_value = (0,)  # Simulate no conflict
+    with patch.object(database, "get_items", return_value=[mock_item]):
+        database.sync_with_postgresql("host", "db", "user", "pass")
 
-        with patch(
-            "pyside_demo.db.database.psycopg2.connect", return_value=mock_conn
-        ), patch.object(
-            database, "is_online", return_value=True
-        ), patch.object(
-            database, "get_items", return_value=[mock_item]
-        ):
+    expected_params = (
+        mock_item.id,
+        mock_item.name,
+        mock_item.description,
+        mock_item.created_at,
+        mock_item.updated_at,
+        mock_item.version,
+        "synced",
+    )
+    mock_cur.execute.assert_any_call(
+        SQL_UPDATE_OR_INSERT_ITEM, expected_params
+    )
 
-            database.sync_with_postgresql("host", "db", "user", "pass")
 
-        expected_params = (
-            mock_item.id,
-            mock_item.name,
-            mock_item.description,
-            mock_item.created_at,
-            mock_item.updated_at,
-            mock_item.version,
-            "synced",
-        )
-        mock_cur.execute.assert_any_call(
-            SQL_UPDATE_OR_INSERT_ITEM, expected_params
-        )
+@patch("pyside_demo.db.database.psycopg2.connect")
+@patch.object(Database, "is_online", return_value=True)
+@patch.object(Database, "get_items", return_value=[])
+def test_fetch_items_from_postgresql(
+    mock_get_items,
+    mock_is_online,
+    mock_connect,
+    database,
+    mock_postgres_connection,
+):
+    mock_conn, mock_cur = mock_postgres_connection
+    mock_connect.return_value = mock_conn
+    mock_cur.fetchall.return_value = []  # Simulate no items in PostgreSQL
 
-    def test_fetch_items_from_postgresql(
-        self, database, mock_postgres_connection
-    ):
-        mock_conn, mock_cur = mock_postgres_connection
-        mock_cur.fetchall.return_value = []  # Simulate no items in PostgreSQL
+    database.sync_with_postgresql("host", "db", "user", "pass")
 
-        with patch(
-            "pyside_demo.db.database.psycopg2.connect", return_value=mock_conn
-        ), patch.object(
-            database, "is_online", return_value=True
-        ), patch.object(
-            database, "get_items", return_value=[]
-        ):
+    mock_cur.execute.assert_any_call(SQL_FETCH_ITEMS)
 
-            database.sync_with_postgresql("host", "db", "user", "pass")
 
-        mock_cur.execute.assert_any_call(SQL_FETCH_ITEMS)
+@patch("pyside_demo.db.database.psycopg2.connect")
+@patch.object(Database, "is_online", return_value=True)
+@patch.object(Database, "get_items", return_value=[])
+def test_commit_changes(
+    mock_get_items,
+    mock_is_online,
+    mock_connect,
+    database,
+    mock_postgres_connection,
+):
+    mock_conn, mock_cur = mock_postgres_connection
+    mock_connect.return_value = mock_conn
 
-    def test_commit_changes(self, database, mock_postgres_connection):
-        mock_conn, mock_cur = mock_postgres_connection
+    with patch.object(database, "Session") as mock_session_class:
+        mock_session = Mock()
+        mock_session_class.return_value = mock_session
 
-        with patch(
-            "pyside_demo.db.database.psycopg2.connect", return_value=mock_conn
-        ), patch.object(
-            database, "is_online", return_value=True
-        ), patch.object(
-            database, "get_items", return_value=[]
-        ), patch.object(
-            database, "Session"
-        ) as mock_session_class:
+        database.sync_with_postgresql("host", "db", "user", "pass")
 
-            mock_session = Mock()
-            mock_session_class.return_value = mock_session
+    mock_conn.commit.assert_called_once()
+    mock_session.commit.assert_called_once()
 
-            database.sync_with_postgresql("host", "db", "user", "pass")
 
-        mock_conn.commit.assert_called_once()
-        mock_session.commit.assert_called_once()
+@patch("pyside_demo.db.database.psycopg2.connect")
+@patch.object(Database, "is_online", return_value=True)
+@patch.object(Database, "get_items", return_value=[])
+def test_close_connections(
+    mock_get_items,
+    mock_is_online,
+    mock_connect,
+    database,
+    mock_postgres_connection,
+):
+    mock_conn, mock_cur = mock_postgres_connection
+    mock_connect.return_value = mock_conn
 
-    def test_close_connections(self, database, mock_postgres_connection):
-        mock_conn, mock_cur = mock_postgres_connection
+    database.sync_with_postgresql("host", "db", "user", "pass")
 
-        with patch(
-            "pyside_demo.db.database.psycopg2.connect", return_value=mock_conn
-        ), patch.object(
-            database, "is_online", return_value=True
-        ), patch.object(
-            database, "get_items", return_value=[]
-        ):
+    mock_cur.close.assert_called_once()
+    mock_conn.close.assert_called_once()
 
-            database.sync_with_postgresql("host", "db", "user", "pass")
 
-        mock_cur.close.assert_called_once()
-        mock_conn.close.assert_called_once()
+@patch.object(Database, "is_online", return_value=False)
+@patch("pyside_demo.db.database.psycopg2.connect")
+def test_sync_offline(mock_connect, mock_is_online, database):
+    database.sync_with_postgresql("host", "db", "user", "pass")
 
-    def test_sync_offline(self, database):
-        with patch.object(database, "is_online", return_value=False), patch(
-            "pyside_demo.db.database.psycopg2.connect"
-        ) as mock_connect:
-
-            database.sync_with_postgresql("host", "db", "user", "pass")
-
-        mock_connect.assert_not_called()
+    mock_connect.assert_not_called()
