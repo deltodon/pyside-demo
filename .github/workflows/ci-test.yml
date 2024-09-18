@@ -30,30 +30,15 @@ jobs:
           version: ${{ env.POETRY_VERSION }}
           virtualenvs-create: true
           virtualenvs-in-project: true
-      - name: Set Poetry path for Windows
-        if: runner.os == 'Windows'
-        run: echo "$env:USERPROFILE\.poetry\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
       - name: Install dependencies
-        shell: bash
         run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            $env:USERPROFILE\.poetry\bin\poetry install
-          else
-            poetry install
-          fi
+          poetry install
+        shell: bash
       - name: Lint code
-        shell: bash
         run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            $env:USERPROFILE\.poetry\bin\poetry run pre-commit run --all-files
-          else
-            poetry run pre-commit run --all-files
-          fi
+          poetry run pre-commit run --all-files
+        shell: bash
       - name: Test code
-        shell: bash
         run: |
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            $env:USERPROFILE\.poetry\bin\poetry run python -m pytest -v
-          else
-            poetry run python -m pytest -v
-          fi
+          poetry run python -m pytest -v
+        shell: bash
