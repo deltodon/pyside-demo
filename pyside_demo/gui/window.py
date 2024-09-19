@@ -1,5 +1,6 @@
+from PySide6 import QtGui
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (
+from PySide6.QtWidgets import (  # QStyle,
     QHBoxLayout,
     QLineEdit,
     QListWidget,
@@ -7,7 +8,6 @@ from PySide6.QtWidgets import (
     QMainWindow,
     QMessageBox,
     QPushButton,
-    QStyle,
     QTextEdit,
     QVBoxLayout,
     QWidget,
@@ -15,29 +15,23 @@ from PySide6.QtWidgets import (
 
 from pyside_demo.db.database import Database, SyncStatus
 from pyside_demo.gui.dialog import ConflictResolutionDialog
-from pyside_demo.gui.ui_mainwindow import Ui_MainWindow
-
-
-class NewUiMainWindow(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self._ui = Ui_MainWindow()
-        self._ui.setupUi(self)
+from pyside_demo.resources import rc_resources  # noqa: F401
+from pyside_demo.resources.ui_mainwindow import Ui_MainWindow
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        self._ui = Ui_MainWindow()
+        self._ui.setupUi(self)
         self.setWindowTitle("PySide Demo")
-        icon = self.style().standardIcon(
-            QStyle.StandardPixmap.SP_BrowserReload
-        )
+        icon = QtGui.QIcon(":/icons/deltodon-logo.png")
         self.setWindowIcon(icon)
-        self.setGeometry(100, 100, 800, 600)
+        # self.setGeometry(100, 100, 800, 600)
 
         self.db = Database()
 
-        self.init_ui()
+        # self.init_ui()
 
     def init_ui(self):
         central_widget = QWidget()

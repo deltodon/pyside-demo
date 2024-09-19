@@ -1,1 +1,7 @@
-{"files": ["__main__.py", "gui/mainwindow.ui"]}
+{
+   "files":[
+      "__main__.py",
+      "resources/mainwindow.ui",
+      "resources/resources.qrc"
+   ]
+}

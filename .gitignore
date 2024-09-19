@@ -1,6 +1,9 @@
 ### SQLite
 *.db
 
+### Generated resources
+pyside_demo/resources/*.py
+
 ### Emacs ###
 # -*- mode: gitignore; -*-
 *~

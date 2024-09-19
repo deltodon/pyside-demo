@@ -10,6 +10,7 @@
 * [Conflict Resolution](#conflict-resolution)
 * [Data Model](#data-model)
 * [Contributing](#contributing)
+* [Icons](#icons)
 
 ## Overview
 
@@ -68,48 +69,56 @@ password = "your_password"
 
 ## Usage
 
-1. Build the project:
-
-   ```bash
-   poetry run pyside6-project build pyside_demo
-   ```
-
-2. Run the application:
+1. Run the application:
 
    ```bash
    poetry run python pyside_demo
    ```
 
-3. Use the GUI to add, edit, and view items:
+2. Use the GUI to add, edit, and view items:
    * Enter item details in the left panel and click "Add Item" or "Update Item"
    * View and select items from the list in the right panel
 
-4. Synchronize with PostgreSQL:
+3. Synchronize with PostgreSQL:
    * Click the "Sync with PostgreSQL" button to initiate synchronization
    * If conflicts are detected, a dialog will appear for each conflict, allowing you to choose between the local and remote versions
 
-5. Run unit tests:
+## Development
+
+1. Open Qt Designer
+
+   ```bash
+   poetry run pyside6-designer
+   ```
+
+2. Build the project:
+
+   ```bash
+   poetry run pyside6-project build pyside_demo
+   ```
+
+3. Run unit tests:
 
    ```bash
    poetry run python -m pytest -v
    ```
 
-6. Run mypy test:
+4. Run mypy test:
 
    ```bash
    poetry run mypy pyside_demo
    ```
 
-7. Run all lint tests
-
-   ```bash
-   poetry run pre-commit run --all-files
-   ```
-
-8. Run mypy test with pre-commit:
+5. or run mypy test with pre-commit:
 
    ```bash
    poetry run pre-commit run mypy --all-files
+   ```
+
+6. Run all lint tests
+
+   ```bash
+   poetry run pre-commit run --all-files
    ```
 
 ## Synchronization Process
