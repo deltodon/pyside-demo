@@ -34,6 +34,8 @@ language = "en"
 
 html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
+html_favicon = "_static/favicon.ico"
+html_logo = "_static/logo.png"
 
 # -- Options for todo extension ----------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/extensions/todo.html#configuration
