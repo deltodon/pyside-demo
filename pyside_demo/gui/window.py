@@ -27,7 +27,6 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("PySide Demo")
         icon = QtGui.QIcon(":/icons/deltodon-logo.png")
         self.setWindowIcon(icon)
-        # self.setGeometry(100, 100, 800, 600)
 
         self.db = Database()
 

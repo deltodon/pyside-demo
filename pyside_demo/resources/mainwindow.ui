@@ -20,10 +20,10 @@
    <widget class="QWidget" name="sidebar_widget" native="true">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
+      <x>5</x>
+      <y>5</y>
       <width>48</width>
-      <height>867</height>
+      <height>857</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -35,10 +35,10 @@
    <widget class="QWidget" name="drawer_widget" native="true">
     <property name="geometry">
      <rect>
-      <x>48</x>
-      <y>0</y>
+      <x>58</x>
+      <y>5</y>
       <width>240</width>
-      <height>867</height>
+      <height>857</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -48,9 +48,9 @@
    <widget class="QWidget" name="header_widget" native="true">
     <property name="geometry">
      <rect>
-      <x>288</x>
-      <y>0</y>
-      <width>943</width>
+      <x>303</x>
+      <y>5</y>
+      <width>923</width>
       <height>71</height>
      </rect>
     </property>
@@ -61,10 +61,10 @@
    <widget class="QWidget" name="main_screen_widget" native="true">
     <property name="geometry">
      <rect>
-      <x>288</x>
-      <y>71</y>
-      <width>943</width>
-      <height>796</height>
+      <x>303</x>
+      <y>81</y>
+      <width>923</width>
+      <height>781</height>
      </rect>
     </property>
     <property name="styleSheet">
