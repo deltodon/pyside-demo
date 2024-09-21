@@ -18,6 +18,14 @@ from pyside_demo.db.sql import (
 
 
 class Base(DeclarativeBase):
+    """
+    Base class for declarative SQLAlchemy models.
+
+    This class serves as the base for all database models in the application.
+    It inherits from SQLAlchemy's DeclarativeBase, providing the necessary
+    functionality for declarative model definitions.
+    """
+
     pass
 
 

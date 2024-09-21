@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1231</width>
+    <height>867</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="locale">
+   <locale language="English" country="UnitedKingdom"/>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="sidebar_widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>5</x>
+      <y>5</y>
+      <width>48</width>
+      <height>857</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QWidget{
+	background-color: rgb(63, 63, 63);
+}</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="drawer_widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>58</x>
+      <y>5</y>
+      <width>240</width>
+      <height>857</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(53, 53, 53);</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="header_widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>303</x>
+      <y>5</y>
+      <width>923</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(53, 53, 53);</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="main_screen_widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>303</x>
+      <y>81</y>
+      <width>923</width>
+      <height>781</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(53, 53, 53);</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <includes>
+  <include location="local">from pyside_demo.resources import rc_resources</include>
+ </includes>
+ <resources/>
+ <connections/>
+</ui>

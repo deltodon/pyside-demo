@@ -1,6 +1,9 @@
 ### SQLite
 *.db
 
+### Generated resources
+pyside_demo/resources/*.py
+
 ### Emacs ###
 # -*- mode: gitignore; -*-
 *~
@@ -407,7 +410,7 @@ moc_*.cpp
 moc_*.h
 qrc_*.cpp
 ui_*.h
-Makefile*
+# Makefile*
 *.qm
 *.prl
 

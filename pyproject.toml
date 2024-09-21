@@ -34,6 +34,10 @@ pyside6 = "^6.7.2"
 sqlalchemy = "^2.0.23"
 requests = "^2.31.0"
 psycopg2-binary = "^2.9.9"
+qtawesome = "^1.3.1"
+folium = "^0.17.0"
+pyqtgraph = "^0.13.7"
+
 
 [tool.poetry.group.dev.dependencies]
 pre-commit = "^3.8.0"
@@ -47,6 +51,11 @@ mypy = "^1.11.2"
 types-psycopg2 = "^2.9.21.20240819"
 types-requests = "^2.32.0.20240914"
 pyside6-stubs = "^6.4.2.0"
+sphinx = "7.4.7"
+sphinx-rtd-theme = "^2.0.0"
+nbsphinx = "^0.9.5"
+myst-parser = "3.0.1"
+
 
 [tool.black]
 line-length = 79
@@ -57,18 +66,20 @@ line_length = 79
 
 [tool.flake8]
 exclude = [
-    'ui_mainwindow.py',
+    "pyside_demo/resources",
 ]
 
 [tool.pymarkdown]
 plugins.line-length.enabled = false
 plugins.header-increment.enabled = false
+plugins.no-duplicate-header.allow_different_nesting = true
 
 [tool.mypy]
 disable_error_code = "attr-defined"
 explicit_package_bases = true
+ignore_missing_imports = true
 exclude = [
-    'ui_mainwindow.py',
+    "pyside_demo/resources",
 ]
 
 [build-system]
