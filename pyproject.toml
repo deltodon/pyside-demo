@@ -73,6 +73,7 @@ exclude = [
 [tool.pymarkdown]
 plugins.line-length.enabled = false
 plugins.header-increment.enabled = false
+plugins.no-duplicate-header.allow_different_nesting = true
 
 [tool.mypy]
 disable_error_code = "attr-defined"

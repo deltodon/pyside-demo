@@ -7,7 +7,6 @@ This module handles database operations and synchronization for the PySide Demo 
    :members:
    :undoc-members:
    :show-inheritance:
-   :no-index:
 
 Submodules
 ----------
