@@ -90,37 +90,43 @@ password = "your_password"
 
 ## Development
 
-1. Open Qt Designer
+* Open Qt Designer
 
    ```bash
    poetry run pyside6-designer
    ```
 
-2. Build the project:
+* Search for qtawesome icons
+
+   ```bash
+   poetry run qta-browser
+   ```
+
+* Build the project:
 
    ```bash
    poetry run pyside6-project build pyside_demo
    ```
 
-3. Run unit tests:
+* Run unit tests:
 
    ```bash
    poetry run python -m pytest -v
    ```
 
-4. Run mypy test:
+* Run mypy test:
 
    ```bash
    poetry run mypy pyside_demo
    ```
 
-5. or run mypy test with pre-commit:
+* or run mypy test with pre-commit:
 
    ```bash
    poetry run pre-commit run mypy --all-files
    ```
 
-6. Run all lint tests
+* Run all lint tests
 
    ```bash
    poetry run pre-commit run --all-files

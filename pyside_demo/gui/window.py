@@ -1,14 +1,23 @@
+from PySide6 import QtGui
 from PySide6.QtWidgets import QHBoxLayout, QMainWindow, QStackedWidget, QWidget
 
+from pyside_demo.gui.data import DataWidget
 from pyside_demo.gui.home import HomeDashboard
 from pyside_demo.gui.settings import SettingsWidget
 from pyside_demo.gui.sidebar import SideBar
 from pyside_demo.resources import rc_resources  # noqa: F401
+from pyside_demo.resources.ui_mainwindow import Ui_MainWindow
 
 
-class NewMainWindow(QMainWindow):
+class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        self._ui = Ui_MainWindow()
+        self._ui.setupUi(self)
+        self.setWindowTitle("PySide Demo")
+        icon = QtGui.QIcon(":/icons/deltodon-logo.png")
+        self.setWindowIcon(icon)
+
         self.setWindowTitle("PySide6 App with Collapsible Sidebar")
         self.setGeometry(100, 100, 800, 600)
         self.setStyleSheet(
@@ -48,6 +57,7 @@ class NewMainWindow(QMainWindow):
         self.sidebar = SideBar()
         sidebar_button_functions = [
             ("Home", self.show_home),
+            ("Data", self.show_data),
             ("New File", self.new_file),
             ("Open File", self.open_file),
             ("Search", self.search_files),
@@ -65,6 +75,10 @@ class NewMainWindow(QMainWindow):
         self.home_dashboard = HomeDashboard()
         self.content_area.addWidget(self.home_dashboard)
 
+        # Create data widget
+        self.data_widget = DataWidget()
+        self.content_area.addWidget(self.data_widget)
+
         # Create settings widget
         self.settings_widget = SettingsWidget()
         self.content_area.addWidget(self.settings_widget)
@@ -78,6 +92,9 @@ class NewMainWindow(QMainWindow):
 
     def show_home(self):
         self.content_area.setCurrentWidget(self.home_dashboard)
+
+    def show_data(self):
+        self.content_area.setCurrentWidget(self.data_widget)
 
     def show_settings(self):
         self.content_area.setCurrentWidget(self.settings_widget)

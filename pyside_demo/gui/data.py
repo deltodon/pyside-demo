@@ -1,11 +1,9 @@
-from PySide6 import QtGui
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (
+from PySide6.QtWidgets import (  # QLabel,
     QHBoxLayout,
     QLineEdit,
     QListWidget,
     QListWidgetItem,
-    QMainWindow,
     QMessageBox,
     QPushButton,
     QTextEdit,
@@ -15,31 +13,19 @@ from PySide6.QtWidgets import (
 
 from pyside_demo.db.database import Database, SyncStatus
 from pyside_demo.gui.dialog import ConflictResolutionDialog
-from pyside_demo.resources import rc_resources  # noqa: F401
-from pyside_demo.resources.ui_mainwindow import Ui_MainWindow
 
 
-class OldMainWindow(QMainWindow):
-    def __init__(self):
+class DataWidget(QWidget):
+    def __init__(
+        self,
+    ):
         super().__init__()
-        self._ui = Ui_MainWindow()
-        self._ui.setupUi(self)
-        self.setWindowTitle("PySide Demo")
-        icon = QtGui.QIcon(":/icons/deltodon-logo.png")
-        self.setWindowIcon(icon)
-
         self.db = Database()
 
-        self.init_ui()
-
-    def init_ui(self):
-        central_widget = QWidget()
-        self.setCentralWidget(central_widget)
-
-        main_layout = QHBoxLayout()
+        self.main_layout = QHBoxLayout(self)
 
         # Left side: Add/Edit item form
-        left_layout = QVBoxLayout()
+        self.left_layout = QVBoxLayout()
         self.name_input = QLineEdit()
         self.name_input.setPlaceholderText("Item Name")
         self.description_input = QTextEdit()
@@ -47,24 +33,24 @@ class OldMainWindow(QMainWindow):
         self.add_edit_button = QPushButton("Add Item")
         self.add_edit_button.clicked.connect(self.add_or_edit_item)
 
-        left_layout.addWidget(self.name_input)
-        left_layout.addWidget(self.description_input)
-        left_layout.addWidget(self.add_edit_button)
+        self.left_layout.addWidget(self.name_input)
+        self.left_layout.addWidget(self.description_input)
+        self.left_layout.addWidget(self.add_edit_button)
 
         # Right side: Item list and sync button
-        right_layout = QVBoxLayout()
+        self.right_layout = QVBoxLayout()
         self.item_list = QListWidget()
         self.item_list.itemClicked.connect(self.load_item)
         sync_button = QPushButton("Sync with PostgreSQL")
         sync_button.clicked.connect(self.sync_with_postgresql)
 
-        right_layout.addWidget(self.item_list)
-        right_layout.addWidget(sync_button)
+        self.right_layout.addWidget(self.item_list)
+        self.right_layout.addWidget(sync_button)
 
-        main_layout.addLayout(left_layout)
-        main_layout.addLayout(right_layout)
+        self.main_layout.addLayout(self.left_layout)
+        self.main_layout.addLayout(self.right_layout)
 
-        central_widget.setLayout(main_layout)
+        self.setLayout(self.main_layout)
 
         self.load_items()
 
