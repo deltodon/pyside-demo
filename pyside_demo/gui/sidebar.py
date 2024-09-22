@@ -62,6 +62,7 @@ class SideBar(QFrame):
             ("Home", "fa5s.home"),
             ("Data", "fa5s.database"),
             ("Map", "fa5s.map"),
+            ("Graph", "fa5s.chart-line"),
             # ("New File", "fa5s.file"),
             # ("Open File", "fa5s.folder-open"),
             # ("Search", "fa5s.search"),

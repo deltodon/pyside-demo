@@ -2,6 +2,7 @@ from PySide6 import QtGui
 from PySide6.QtWidgets import QHBoxLayout, QMainWindow, QStackedWidget, QWidget
 
 from pyside_demo.gui.data import DataWidget
+from pyside_demo.gui.graph import GraphWidget
 from pyside_demo.gui.home import HomeWidget
 from pyside_demo.gui.map import MapWidget
 from pyside_demo.gui.settings import SettingsWidget
@@ -63,6 +64,7 @@ class MainWindow(QMainWindow):
             ("Home", self.show_home),
             ("Data", self.show_data),
             ("Map", self.show_map),
+            ("Graph", self.show_graph),
             # ("New File", self.new_file),
             # ("Open File", self.open_file),
             # ("Search", self.search_files),
@@ -88,6 +90,10 @@ class MainWindow(QMainWindow):
         self.map_widget = MapWidget()
         self.content_area.addWidget(self.map_widget)
 
+        # Create graph widget
+        self.graph_widget = GraphWidget()
+        self.content_area.addWidget(self.graph_widget)
+
         # Create settings widget
         self.settings_widget = SettingsWidget()
         self.content_area.addWidget(self.settings_widget)
@@ -107,6 +113,9 @@ class MainWindow(QMainWindow):
 
     def show_map(self):
         self.content_area.setCurrentWidget(self.map_widget)
+
+    def show_graph(self):
+        self.content_area.setCurrentWidget(self.graph_widget)
 
     def show_settings(self):
         self.content_area.setCurrentWidget(self.settings_widget)
