@@ -22,7 +22,7 @@ We welcome contributions to the PySide Demo project! This document provides guid
 5. Push your changes to your fork:
 
    ```bash
-   git push origin feature-or-fix-name
+   git push --set-upstream origin feature-or-fix-name
    ```
 
 6. Open a pull request on the original repository.
@@ -34,15 +34,54 @@ We welcome contributions to the PySide Demo project! This document provides guid
 * Write clear, concise comments and docstrings.
 * Ensure your code is compatible with Python 3.9+.
 
+## Development
+
+* Open Qt Designer
+
+   ```bash
+   poetry run pyside6-designer
+   ```
+
+* Search for qtawesome icons
+
+   ```bash
+   poetry run qta-browser
+   ```
+
+* Build the project:
+
+   ```bash
+   poetry run pyside6-project build pyside_demo
+   ```
+
 ## Testing
 
 * Add unit tests for new functionality.
 * Ensure all tests pass before submitting a pull request.
+
 * Run tests using pytest:
 
   ```bash
-  poetry run pytest
+  poetry run python -m pytest -v
   ```
+
+* Run mypy test:
+
+   ```bash
+   poetry run mypy pyside_demo
+   ```
+
+* or run mypy test with pre-commit:
+
+   ```bash
+   poetry run pre-commit run mypy --all-files
+   ```
+
+* Run all lint tests
+
+   ```bash
+   poetry run pre-commit run --all-files
+   ```
 
 ## Documentation
 

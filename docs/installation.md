@@ -6,6 +6,7 @@ This guide will help you set up PySide Demo on your local machine.
 
 * Python 3.9 or higher
 * Poetry (for dependency management)
+* PostgreSQL server (for remote synchronization)
 
 ## Steps
 
@@ -22,17 +23,32 @@ This guide will help you set up PySide Demo on your local machine.
    poetry install
    ```
 
-3. Activate the virtual environment:
+3. Install pre-commit hooks (optional):
 
    ```bash
-   poetry shell
+   poetry run pre-commit install
    ```
 
 4. Run the application:
 
    ```bash
-   python -m pyside_demo
+   poetry run python -m pyside_demo
    ```
+
+## Configuration
+
+Before running the application, you need to configure the PostgreSQL connection details:
+
+1. Open `gui.py`
+2. Locate the `sync_with_postgresql` method in the `MainWindow` class
+3. Update the following variables with your PostgreSQL server details:
+
+```python
+host = "your_host"
+database = "your_database"
+user = "your_username"
+password = "your_password"
+```
 
 ## Troubleshooting
 

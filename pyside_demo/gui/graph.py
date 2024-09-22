@@ -1,23 +1,20 @@
-"""This module demonstrates 2D plotting capabilities in pyqtgraph.
+"""This module demonstrates 2D plotting capabilities in `PyQtGraph <https://www.pyqtgraph.org/>`_
 
-This functionality is originally from:
-.venv/Lib/site-packages/pyqtgraph/examples/Plotting.py
+Source:
+    This functionality is implemented from `PyQtGraph example <https://pyqtgraph.readthedocs.io/en/latest/getting_started/introduction.html#examples>`_:
 
-It can also be accessed by running:
-    poetry run python -m pyqtgraph.examples
-and selecting 'Basic Plotting'.
+    ``.venv/Lib/site-packages/pyqtgraph/examples/Plotting.py``
+
+    that can also be accessed by running::
+
+        $ poetry run python -m pyqtgraph.examples
+
+    and selecting ``Basic Plotting``.
 
 The module showcases various 2D plotting features available in pyqtgraph.
 All plots can be panned/scaled by dragging with left/right mouse buttons.
 Right-clicking on any plot displays a context menu.
-
-Attributes:
-    None
-
-Todo:
-    * None
-
-"""
+"""  # noqa: E501
 
 import numpy as np
 import pyqtgraph as pg

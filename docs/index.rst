@@ -10,6 +10,7 @@ Welcome to the PySide Demo documentation. This project demonstrates an offline-f
    introduction
    installation
    usage
+   data
    modules/index
    contributing
    changelog

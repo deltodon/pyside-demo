@@ -4,10 +4,11 @@ PySide Demo is an offline-first GUI application built with PySide6 and featuring
 
 ## Key Features
 
-* Offline-first architecture
 * PySide6-based graphical user interface
-* PostgreSQL database synchronization
-* [Add more key features]
+* Add, edit, and view items in a local SQLite database
+* Offline-first functionality: work without an internet connection
+* Synchronize local data with a remote PostgreSQL database
+* Sophisticated conflict resolution mechanism
 
 ## Purpose
 
