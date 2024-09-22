@@ -61,6 +61,7 @@ class SideBar(QFrame):
             ("Toggle Sidebar", "fa5s.bars"),
             ("Home", "fa5s.home"),
             ("Data", "fa5s.database"),
+            ("Map", "fa5s.map"),
             ("New File", "fa5s.file"),
             ("Open File", "fa5s.folder-open"),
             ("Search", "fa5s.search"),

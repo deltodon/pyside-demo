@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QHBoxLayout, QMainWindow, QStackedWidget, QWidget
 
 from pyside_demo.gui.data import DataWidget
 from pyside_demo.gui.home import HomeDashboard
+from pyside_demo.gui.map import MapWidget
 from pyside_demo.gui.settings import SettingsWidget
 from pyside_demo.gui.sidebar import SideBar
 from pyside_demo.resources import rc_resources  # noqa: F401
@@ -58,9 +59,10 @@ class MainWindow(QMainWindow):
         sidebar_button_functions = [
             ("Home", self.show_home),
             ("Data", self.show_data),
-            ("New File", self.new_file),
-            ("Open File", self.open_file),
-            ("Search", self.search_files),
+            ("Map", self.show_map),
+            # ("New File", self.new_file),
+            # ("Open File", self.open_file),
+            # ("Search", self.search_files),
             ("Full Screen", self.toggle_full_screen),
             ("Settings", self.show_settings),
         ]
@@ -79,6 +81,10 @@ class MainWindow(QMainWindow):
         self.data_widget = DataWidget()
         self.content_area.addWidget(self.data_widget)
 
+        # Create map widget
+        self.map_widget = MapWidget()
+        self.content_area.addWidget(self.map_widget)
+
         # Create settings widget
         self.settings_widget = SettingsWidget()
         self.content_area.addWidget(self.settings_widget)
@@ -95,6 +101,9 @@ class MainWindow(QMainWindow):
 
     def show_data(self):
         self.content_area.setCurrentWidget(self.data_widget)
+
+    def show_map(self):
+        self.content_area.setCurrentWidget(self.map_widget)
 
     def show_settings(self):
         self.content_area.setCurrentWidget(self.settings_widget)
