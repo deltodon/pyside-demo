@@ -4,11 +4,25 @@ This guide provides an overview of how to use the PySide Demo application.
 
 ## Starting the Application
 
-After installation, you can start the application by running:
+1. After installation, you can start the application by running:
 
-```bash
-python -m pyside_demo
-```
+   ```bash
+   python -m pyside_demo
+   ```
+
+   or if you juse Poetry
+
+   ```bash
+   poetry run python pyside_demo
+   ```
+
+2. Use the GUI to add, edit, and view items:
+   * Enter item details in the left panel and click "Add Item" or "Update Item"
+   * View and select items from the list in the right panel
+
+3. Synchronize with PostgreSQL:
+   * Click the "Sync with PostgreSQL" button to initiate synchronization
+   * If conflicts are detected, a dialog will appear for each conflict, allowing you to choose between the local and remote versions
 
 ## Main Features
 
