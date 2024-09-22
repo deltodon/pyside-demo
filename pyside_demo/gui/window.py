@@ -2,10 +2,11 @@ from PySide6 import QtGui
 from PySide6.QtWidgets import QHBoxLayout, QMainWindow, QStackedWidget, QWidget
 
 from pyside_demo.gui.data import DataWidget
-from pyside_demo.gui.home import HomeDashboard
+from pyside_demo.gui.home import HomeWidget
 from pyside_demo.gui.map import MapWidget
 from pyside_demo.gui.settings import SettingsWidget
 from pyside_demo.gui.sidebar import SideBar
+from pyside_demo.gui.top_menu import create_menu_bar
 from pyside_demo.resources import rc_resources  # noqa: F401
 from pyside_demo.resources.ui_mainwindow import Ui_MainWindow
 
@@ -19,7 +20,7 @@ class MainWindow(QMainWindow):
         icon = QtGui.QIcon(":/icons/deltodon-logo.png")
         self.setWindowIcon(icon)
 
-        self.setWindowTitle("PySide6 App with Collapsible Sidebar")
+        self.setWindowTitle("PySide Demo")
         self.setGeometry(100, 100, 800, 600)
         self.setStyleSheet(
             """
@@ -45,8 +46,10 @@ class MainWindow(QMainWindow):
             QMenu::item:selected {
                 background-color: #3E3E42;
             }
-        """
+            """
         )
+
+        create_menu_bar(self)
 
         # Create main widget and layout
         main_widget = QWidget()
@@ -73,8 +76,8 @@ class MainWindow(QMainWindow):
         # Create content area
         self.content_area = QStackedWidget()
 
-        # Create home dashboard
-        self.home_dashboard = HomeDashboard()
+        # Create home widget
+        self.home_dashboard = HomeWidget()
         self.content_area.addWidget(self.home_dashboard)
 
         # Create data widget

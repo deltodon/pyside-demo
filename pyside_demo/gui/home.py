@@ -2,7 +2,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QLabel, QVBoxLayout, QWidget
 
 
-class HomeDashboard(QWidget):
+class HomeWidget(QWidget):
     def __init__(
         self,
     ):
