@@ -1,6 +1,6 @@
 from PySide6 import QtGui
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (  # QStyle,
+from PySide6.QtWidgets import (
     QHBoxLayout,
     QLineEdit,
     QListWidget,
@@ -19,7 +19,7 @@ from pyside_demo.resources import rc_resources  # noqa: F401
 from pyside_demo.resources.ui_mainwindow import Ui_MainWindow
 
 
-class MainWindow(QMainWindow):
+class OldMainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self._ui = Ui_MainWindow()
@@ -30,7 +30,7 @@ class MainWindow(QMainWindow):
 
         self.db = Database()
 
-        # self.init_ui()
+        self.init_ui()
 
     def init_ui(self):
         central_widget = QWidget()
