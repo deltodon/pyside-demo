@@ -1,5 +1,11 @@
 # PySide Demo
 
+|   |   |
+|---|---|
+|Project|[![Python Versions](https://img.shields.io/badge/Python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue?logo=python&logoColor=white)](https://www.python.org/) [![Supported Platforms](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-blue)](https://github.com/deltodon/pyside-demo) [![License](https://img.shields.io/github/license/deltodon/pyside-demo)](LICENSE) |
+|Quality| [![Issues](https://img.shields.io/github/issues/deltodon/pyside-demo)](https://github.com/deltodon/pyside-demo/issues) [![Lint](https://img.shields.io/badge/Lint-black%20%7C%20isort%20%7C%20flake8%20%7C%20mypy%20%7C%20pymarkdown-blue)](https://github.com/deltodon/pyside-demo/blob/main/.pre-commit-config.yaml) |
+| Tools | [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://pre-commit.com/) [![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/) |
+
 * [Overview](#overview)
 * [Features](#features)
 * [Prerequisites](#prerequisites)
@@ -10,7 +16,6 @@
 * [Conflict Resolution](#conflict-resolution)
 * [Data Model](#data-model)
 * [Contributing](#contributing)
-* [Icons](#icons)
 
 ## Overview
 
@@ -85,37 +90,43 @@ password = "your_password"
 
 ## Development
 
-1. Open Qt Designer
+* Open Qt Designer
 
    ```bash
    poetry run pyside6-designer
    ```
 
-2. Build the project:
+* Search for qtawesome icons
+
+   ```bash
+   poetry run qta-browser
+   ```
+
+* Build the project:
 
    ```bash
    poetry run pyside6-project build pyside_demo
    ```
 
-3. Run unit tests:
+* Run unit tests:
 
    ```bash
    poetry run python -m pytest -v
    ```
 
-4. Run mypy test:
+* Run mypy test:
 
    ```bash
    poetry run mypy pyside_demo
    ```
 
-5. or run mypy test with pre-commit:
+* or run mypy test with pre-commit:
 
    ```bash
    poetry run pre-commit run mypy --all-files
    ```
 
-6. Run all lint tests
+* Run all lint tests
 
    ```bash
    poetry run pre-commit run --all-files
