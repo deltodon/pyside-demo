@@ -61,7 +61,7 @@ class SidebarButton(QWidget):
 
         self.icon_label = QLabel()
         self.icon_label.setFixedSize(SIDEBAR_WIDTH_COLLAPSED, BUTTON_HEIGHT)
-        self.icon_label.setAlignment(Qt.AlignCenter)
+        self.icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.icon_label.setPixmap(
             qta.icon(icon, color="white").pixmap(QSize(ICON_SIZE, ICON_SIZE))
         )
@@ -82,7 +82,9 @@ class SidebarButton(QWidget):
         self.setFixedWidth(
             SIDEBAR_WIDTH_COLLAPSED
         )  # Start with collapsed width
-        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.setSizePolicy(
+            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed
+        )
 
     def set_expanded(self, expanded):
         """
@@ -176,7 +178,7 @@ class SideBar(QFrame):
         self.animation.setDuration(ANIMATION_DURATION)
         self.animation.setStartValue(self.width())
         self.animation.setEndValue(width)
-        self.animation.setEasingCurve(QEasingCurve.InOutQuart)
+        self.animation.setEasingCurve(QEasingCurve.Type.InOutQuart)
         self.animation.start()
 
         for button in self.buttons.values():

@@ -11,7 +11,7 @@ from PySide6.QtWidgets import (  # QLabel,
     QWidget,
 )
 
-from pyside_demo.db.database import Database, SyncStatus
+from pyside_demo.db.database import Database, Item, SyncStatus
 from pyside_demo.gui.dialog import ConflictResolutionDialog
 
 
@@ -64,7 +64,7 @@ class DataWidget(QWidget):
             else:
                 selected_items = self.item_list.selectedItems()
                 if selected_items:
-                    item_id = selected_items[0].data(Qt.UserRole)
+                    item_id = selected_items[0].data(Qt.ItemDataRole.UserRole)
                     self.db.update_item(item_id, name, description)
 
             self.name_input.clear()
@@ -83,16 +83,16 @@ class DataWidget(QWidget):
             list_item = QListWidgetItem(
                 f"{item.name} ({item.sync_status.value})"
             )
-            list_item.setData(Qt.UserRole, item.id)
+            list_item.setData(Qt.ItemDataRole.UserRole, item.id)
             self.item_list.addItem(list_item)
 
     def load_item(self, item):
-        item_id = item.data(Qt.UserRole)
+        item_id = item.data(Qt.ItemDataRole.UserRole)
         session = self.db.Session()
-        db_item = session.query(self.db.Item).filter_by(id=item_id).first()
+        db_item = session.query(Item).filter_by(id=item_id).first()
         if db_item:
-            self.name_input.setText(db_item.name)
-            self.description_input.setPlainText(db_item.description)
+            self.name_input.setText(str(db_item.name))
+            self.description_input.setPlainText(str(db_item.description))
             self.add_edit_button.setText("Update Item")
         session.close()
 
@@ -116,7 +116,7 @@ class DataWidget(QWidget):
     def resolve_conflicts(self):
         session = self.db.Session()
         conflict_items = (
-            session.query(self.db.Item)
+            session.query(Item)
             .filter_by(sync_status=SyncStatus.CONFLICT)
             .all()
         )

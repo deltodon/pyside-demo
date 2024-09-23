@@ -14,10 +14,16 @@ Source:
 The module showcases various 2D plotting features available in pyqtgraph.
 All plots can be panned/scaled by dragging with left/right mouse buttons.
 Right-clicking on any plot displays a context menu.
+
+Original source code was updated to pass mypy test.
 """  # noqa: E501
+
+from typing import Union, overload
 
 import numpy as np
 import pyqtgraph as pg
+from PySide6.QtCore import QRect
+from PySide6.QtGui import QBitmap, QPolygon, QRegion
 from PySide6.QtWidgets import QGridLayout, QWidget
 
 
@@ -124,9 +130,27 @@ class GraphWidget(QWidget):
 
         # Setup timer for updating plot
         self.timer = pg.QtCore.QTimer()
-        self.timer.timeout.connect(self.update)
+        self.timer.timeout.connect(self.update_plot)
         self.timer.start(50)
 
-    def update(self):
+    def update_plot(self):
         self.curve.setData(self.data[self.ptr % 10])
         self.ptr += 1
+
+    @overload
+    def update(self) -> None: ...
+
+    @overload
+    def update(self, arg__1: QRect) -> None: ...
+
+    @overload
+    def update(
+        self, arg__1: Union[QRegion, QBitmap, QPolygon, QRect]
+    ) -> None: ...
+
+    @overload
+    def update(self, x: int, y: int, w: int, h: int) -> None: ...
+
+    def update(self, *args, **kwargs) -> None:
+        super().update(*args, **kwargs)
+        self.update_plot()
