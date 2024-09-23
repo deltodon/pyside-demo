@@ -1,0 +1,47 @@
+QMainWindow {
+    background-color: #1E1E1E;
+    color: #FFFFFF;
+}
+
+QMenuBar {
+    background-color: #333333;
+    color: #FFFFFF;
+}
+
+QMenuBar::item {
+    background-color: transparent;
+}
+
+QMenuBar::item:selected {
+    background-color: #1E1E1E;
+}
+
+QMenu {
+    background-color: #1E1E1E;
+    color: #FFFFFF;
+    border: 1px solid #505050;
+}
+
+QMenu::item:selected {
+    background-color: #3E3E42;
+}
+
+QWidget QLabel {
+    color: white;
+}
+
+QFrame#sidebar {
+    background-color: #252526;
+}
+
+QFrame#sidebar::button QWidget {
+    background-color: transparent;
+}
+
+QFrame#sidebar::button QWidget:hover {
+    background-color: #3E3E42;
+}
+
+QLabel#text-label {
+    padding-left: 10px;
+}

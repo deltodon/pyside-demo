@@ -67,8 +67,8 @@ class SidebarButton(QWidget):
         )
 
         self.text_label = QLabel(label)
-        # set the spacing between icon and label
-        self.text_label.setStyleSheet("color: white; padding-left: 10px;")
+        # used in qss to set the spacing between icon and label
+        self.text_label.setObjectName("text-label")
         # Initially hide the text
         self.text_label.hide()
 
@@ -83,16 +83,6 @@ class SidebarButton(QWidget):
             SIDEBAR_WIDTH_COLLAPSED
         )  # Start with collapsed width
         self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        self.setStyleSheet(
-            """
-            QWidget {
-                background-color: transparent;
-            }
-            QWidget:hover {
-                background-color: #3E3E42;
-            }
-            """
-        )
 
     def set_expanded(self, expanded):
         """
@@ -115,13 +105,6 @@ class SidebarButton(QWidget):
         Args:
             event (QEnterEvent): The enter event.
         """
-        self.setStyleSheet(
-            """
-            QWidget {
-                background-color: #3E3E42;
-            }
-            """
-        )
         super().enterEvent(event)
 
     def leaveEvent(self, event: QEvent) -> None:
@@ -131,13 +114,6 @@ class SidebarButton(QWidget):
         Args:
             event (QEvent): The leave event.
         """
-        self.setStyleSheet(
-            """
-            QWidget {
-                background-color: transparent;
-            }
-            """
-        )
         super().leaveEvent(event)
 
     def mousePressEvent(self, event):
@@ -156,16 +132,6 @@ class SideBar(QFrame):
     ):
         super().__init__()
         self.sidebar_expanded = False
-        self.setStyleSheet(
-            """
-            QFrame {
-                background-color: #252526;
-            }
-            QLabel {
-                background-color: transparent;
-            }
-            """
-        )
         self.setFixedWidth(SIDEBAR_WIDTH_COLLAPSED)
         self.sidebar_layout = QVBoxLayout(self)
         self.sidebar_layout.setContentsMargins(0, 10, 0, 0)
