@@ -59,10 +59,12 @@ myst-parser = "3.0.1"
 
 [tool.black]
 line-length = 79
+force-exclude = "pyside_demo/resources"
 
 [tool.isort]
 profile = "black"
 line_length = 79
+skip = "pyside_demo/resources"
 
 [tool.flake8]
 exclude = [

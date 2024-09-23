@@ -7,21 +7,25 @@ repos:
       entry: poetry run black
       language: system
       types: [file, python]
+      exclude: "pyside_demo/resources"
     - id: isort
       name: isort
       entry: poetry run isort
       language: system
       types: [file, python]
+      exclude: "pyside_demo/resources"
     - id: flake8
       name: flake8
       entry: poetry run flake8
       language: system
       types: [file, python]
+      exclude: "pyside_demo/resources"
     - id: mypy
       name: mypy
       entry: poetry run mypy
       language: system
       types: [file, python]
+      exclude: "pyside_demo/resources"
     - id: pymarkdown
       name: pymarkdown
       entry: poetry run pymarkdown scan
