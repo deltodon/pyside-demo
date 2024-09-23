@@ -59,10 +59,12 @@ myst-parser = "3.0.1"
 
 [tool.black]
 line-length = 79
+force-exclude = "pyside_demo/resources"
 
 [tool.isort]
 profile = "black"
 line_length = 79
+skip = "pyside_demo/resources"
 
 [tool.flake8]
 exclude = [
@@ -75,9 +77,9 @@ plugins.header-increment.enabled = false
 plugins.no-duplicate-header.allow_different_nesting = true
 
 [tool.mypy]
-disable_error_code = "attr-defined"
 explicit_package_bases = true
 ignore_missing_imports = true
+check_untyped_defs = true
 exclude = [
     "pyside_demo/resources",
 ]

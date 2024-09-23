@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime
 from enum import Enum as PyEnum
+from typing import Any
 
 import psycopg2
 import requests
@@ -32,7 +33,7 @@ class Base(DeclarativeBase):
 SQLITE_FILE_NAME: str = "sqlite:///local.db"
 
 
-class SyncStatus(PyEnum):
+class SyncStatus(str, PyEnum):
     SYNCED = "synced"
     MODIFIED = "modified"
     DELETED = "deleted"
@@ -42,17 +43,17 @@ class SyncStatus(PyEnum):
 class Item(Base):
     __tablename__ = "items"
 
-    id: Column = Column(
+    id: Any = Column(
         String, primary_key=True, default=lambda: str(uuid.uuid4())
     )
-    name: Column = Column(String)
-    description: Column = Column(String)
-    created_at: Column = Column(DateTime, default=datetime.utcnow)
-    updated_at: Column = Column(
+    name: Any = Column(String)
+    description: Any = Column(String)
+    created_at: Any = Column(DateTime, default=datetime.utcnow)
+    updated_at: Any = Column(
         DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )
-    version: Column = Column(Integer, default=1)
-    sync_status: Column = Column(
+    version: Any = Column(Integer, default=1)
+    sync_status: Any = Column(
         SQLAlchemyEnum(SyncStatus), default=SyncStatus.MODIFIED
     )
 

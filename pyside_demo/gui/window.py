@@ -23,33 +23,6 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("PySide Demo")
         self.setGeometry(100, 100, 800, 600)
-        self.setStyleSheet(
-            """
-            QMainWindow {
-                background-color: #1E1E1E;
-                color: #FFFFFF;
-            }
-            QMenuBar {
-                background-color: #333333;
-                color: #FFFFFF;
-            }
-            QMenuBar::item {
-                background-color: transparent;
-            }
-            QMenuBar::item:selected {
-                background-color: #1E1E1E;
-            }
-            QMenu {
-                background-color: #1E1E1E;
-                color: #FFFFFF;
-                border: 1px solid #505050;
-            }
-            QMenu::item:selected {
-                background-color: #3E3E42;
-            }
-            """
-        )
-
         create_menu_bar(self)
 
         # Create main widget and layout
@@ -60,6 +33,7 @@ class MainWindow(QMainWindow):
 
         # Create sidebar
         self.sidebar = SideBar()
+        self.sidebar.setObjectName("sidebar")
         sidebar_button_functions = [
             ("Home", self.show_home),
             ("Data", self.show_data),

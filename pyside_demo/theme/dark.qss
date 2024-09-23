@@ -1,0 +1,130 @@
+QMainWindow {
+    background-color: #1E1E1E;
+    color: #FFFFFF;
+}
+
+QMenuBar {
+    background-color: #333333;
+    color: #FFFFFF;
+}
+
+QMenuBar::item {
+    background-color: transparent;
+}
+
+QMenuBar::item:selected {
+    background-color: #1E1E1E;
+}
+
+QMenu {
+    background-color: #1E1E1E;
+    color: #FFFFFF;
+    border: 1px solid #505050;
+}
+
+QMenu::item:selected {
+    background-color: #3E3E42;
+}
+
+QWidget QLabel {
+    color: white;
+}
+
+QFrame#sidebar {
+    background-color: #252526;
+}
+
+QFrame#sidebar::button QWidget {
+    background-color: transparent;
+}
+
+QFrame#sidebar::button QWidget:hover {
+    background-color: #3E3E42;
+}
+
+QLabel#text-label {
+    padding-left: 10px;
+}
+
+QLineEdit,
+QTextEdit,
+QPlainTextEdit,
+QSpinBox,
+QDoubleSpinBox,
+QComboBox,
+QListWidget {
+    background-color: #2a2a2a;
+    selection-background-color: #2a82da;
+    selection-color: yellow;
+    color: white
+}
+
+QLineEdit:disabled,
+QTextEdit:disabled,
+QPlainTextEdit:disabled,
+QSpinBox:disabled,
+QDoubleSpinBox:disabled,
+QComboBox:disabled,
+QListWidget:disabled {
+    color: #7f7f7f;
+}
+
+QPushButton {
+    background-color: #353535;
+    color: white;
+}
+
+QPushButton:disabled {
+    color: #7f7f7f;
+}
+
+QToolTip {
+    background-color: #353535;
+    color: white;
+    border: 1px solid #232323;
+}
+
+QTabBar::tab {
+    background-color: #353535;
+    color: white;
+}
+
+QTabBar::tab:selected {
+    background-color: #2a82da;
+}
+
+QScrollBar {
+    background-color: #353535;
+}
+
+QScrollBar::handle {
+    background-color: #2a2a2a;
+}
+
+QProgressBar {
+    background-color: #353535;
+    border: 1px solid #232323;
+}
+
+QProgressBar::chunk {
+    background-color: #2a82da;
+}
+
+QSlider::groove:horizontal {
+    background-color: #353535;
+}
+
+QSlider::handle:horizontal {
+    background-color: #2a82da;
+}
+
+QCheckBox::indicator,
+QRadioButton::indicator {
+    border: 1px solid #232323;
+    background-color: #353535;
+}
+
+QCheckBox::indicator:checked,
+QRadioButton::indicator:checked {
+    background-color: #2a82da;
+}
