@@ -26,7 +26,7 @@ QMenu::item:selected {
     background-color: #3E3E42;
 }
 
-QWidget QLabel {
+QLabel {
     color: white;
 }
 
@@ -116,6 +116,10 @@ QSlider::groove:horizontal {
 
 QSlider::handle:horizontal {
     background-color: #2a82da;
+}
+
+QRadioButton {
+    color: white;
 }
 
 QCheckBox::indicator,

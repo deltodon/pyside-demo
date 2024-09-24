@@ -65,6 +65,10 @@ class Database:
         self.local_engine = create_engine(f"sqlite:///{SQLITE_FILE_NAME}")
         Base.metadata.create_all(self.local_engine)
         self.Session = sessionmaker(bind=self.local_engine)
+        self.pg_host: Optional[str] = os.getenv("DB_HOST")
+        self.pg_database: Optional[str] = os.getenv("DB_NAME")
+        self.pg_user: Optional[str] = os.getenv("DB_USER")
+        self.pg_password: Optional[str] = os.getenv("DB_PASSWORD")
 
     def add_item(self, name, description):
         session = self.Session()
@@ -81,6 +85,14 @@ class Database:
             item.description = description
             item.version += 1
             item.sync_status = SyncStatus.MODIFIED
+            session.commit()
+        session.close()
+
+    def set_conflict(self, item_id):
+        session = self.Session()
+        item = session.query(Item).filter_by(id=item_id).first()
+        if item:
+            item.sync_status = SyncStatus.CONFLICT
             session.commit()
         session.close()
 
@@ -114,16 +126,14 @@ class Database:
             print("Not online, can't sync with PostgreSQL")
             return
 
-        host: Optional[str] = os.getenv("DB_HOST")
-        database: Optional[str] = os.getenv("DB_NAME")
-        user: Optional[str] = os.getenv("DB_USER")
-        password: Optional[str] = os.getenv("DB_PASSWORD")
-
         conn = None
         cur = None
         try:
             conn = psycopg2.connect(
-                host=host, database=database, user=user, password=password
+                host=self.pg_host,
+                database=self.pg_database,
+                user=self.pg_user,
+                password=self.pg_password,
             )
             cur = conn.cursor()
 
@@ -142,7 +152,8 @@ class Database:
 
                     if result and result[0] > item.version:
                         # Conflict detected
-                        item.sync_status = SyncStatus.CONFLICT
+                        # item.sync_status = SyncStatus.CONFLICT
+                        self.set_conflict(item.id)
                     else:
                         # Update or insert item
                         cur.execute(
@@ -202,7 +213,6 @@ class Database:
             if conn:
                 if cur:
                     cur.close()
-                # Moved the commit here to ensure it's always called
                 conn.commit()
                 conn.close()
 
@@ -213,18 +223,8 @@ class Database:
             if resolution_choice == "local":
                 item.sync_status = SyncStatus.MODIFIED
             elif resolution_choice == "remote":
-                # Fetch the latest version from PostgreSQL and update local
-                # This part would require a connection to PostgreSQL
+                # TODO: Fetch the latest version
+                # from PostgreSQL and update local
                 pass
             session.commit()
         session.close()
-
-
-# Usage example:
-# db = Database()
-# db.add_item("Test Item", "This is a test item")
-# items = db.get_items()
-# for item in items:
-#     print(f"Item: {item.name}, Description: {item.description}, Status: {item.sync_status}")  # noqa: E501
-# db.sync_with_postgresql("localhost", "your_db", "your_user", "your_password")
-# db.resolve_conflict(item_id, 'local')  # or 'remote'
