@@ -1,3 +1,5 @@
+import os
+
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (  # QLabel,
     QHBoxLayout,
@@ -99,10 +101,10 @@ class DataWidget(QWidget):
     def sync_with_postgresql(self):
         # In a real application, you would want to get these
         # from a configuration file or environment variables
-        host = "localhost"
-        database = "your_database"
-        user = "your_username"
-        password = "your_password"
+        host = os.getenv("DB_HOST")
+        database = os.getenv("DB_NAME")
+        user = os.getenv("DB_USER")
+        password = os.getenv("DB_PASSWORD")
 
         self.db.sync_with_postgresql(host, database, user, password)
         self.resolve_conflicts()
