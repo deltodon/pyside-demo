@@ -13,6 +13,7 @@ from sqlalchemy.orm import DeclarativeBase, sessionmaker
 from pyside_demo.db.sql import (
     SQL_CHECK_FOR_CONFLICTS,
     SQL_CREATE_TABLE,
+    SQL_DELETE_ITEM,
     SQL_FETCH_ITEMS,
     SQL_UPDATE_OR_INSERT_ITEM,
 )
@@ -155,9 +156,7 @@ class Database:
                 elif item.sync_status == SyncStatus.DELETED:
                     # Delete item from PostgreSQL
                     cur.execute(
-                        """
-                        DELETE FROM items WHERE id = %s
-                    """,
+                        SQL_DELETE_ITEM,
                         (item.id,),
                     )
 

@@ -32,6 +32,6 @@ SELECT id,
 FROM items
 """
 
-SQL_CHECK_FOR_CONFLICTS: str = """
-SELECT version FROM items WHERE id = %s
-"""
+SQL_CHECK_FOR_CONFLICTS: str = "SELECT version FROM items WHERE id = %s"
+
+SQL_DELETE_ITEM: str = "DELETE FROM items WHERE id = %s"
