@@ -191,3 +191,7 @@ QHeaderView::section:vertical {
 QHeaderView::section:horizontal {
     background-color: #252526;
 }
+
+QDialog {
+    background-color: #252526;
+}

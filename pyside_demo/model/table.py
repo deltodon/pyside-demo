@@ -105,8 +105,8 @@ class TableModel(QAbstractTableModel):
             "sync_status": item.sync_status.value,
         }
 
-    def sync_with_postgresql(self, host, database, user, password):
-        self.db.sync_with_postgresql(host, database, user, password)
+    def sync_with_postgresql(self):
+        self.db.sync_with_postgresql()
         self.refresh_data()
 
     def get_conflict_items(self) -> List[Dict[str, Any]]:

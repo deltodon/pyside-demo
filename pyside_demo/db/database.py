@@ -1,7 +1,8 @@
+import os
 import uuid
 from datetime import datetime
 from enum import Enum as PyEnum
-from typing import Any
+from typing import Any, Optional
 
 import psycopg2
 import requests
@@ -108,10 +109,15 @@ class Database:
         except requests.ConnectionError:
             return False
 
-    def sync_with_postgresql(self, host, database, user, password):
+    def sync_with_postgresql(self):
         if not self.is_online():
             print("Not online, can't sync with PostgreSQL")
             return
+
+        host: Optional[str] = os.getenv("DB_HOST")
+        database: Optional[str] = os.getenv("DB_NAME")
+        user: Optional[str] = os.getenv("DB_USER")
+        password: Optional[str] = os.getenv("DB_PASSWORD")
 
         conn = None
         cur = None
