@@ -1,3 +1,4 @@
+import sqlite3
 from typing import Any, Union
 
 import pandas as pd
@@ -8,12 +9,16 @@ from PySide6.QtCore import (
     Qt,
 )
 
+from pyside_demo.db.database import SQLITE_FILE_NAME
+from pyside_demo.db.sql import SQL_FETCH_ITEMS
+
 
 class TableModel(QAbstractTableModel):
 
-    def __init__(self, data: pd.DataFrame):
+    def __init__(self):
         super(TableModel, self).__init__()
-        self._data = data
+        con = sqlite3.connect(SQLITE_FILE_NAME)
+        self._data: pd.DataFrame = pd.read_sql_query(SQL_FETCH_ITEMS, con)
 
     def data(
         self,
