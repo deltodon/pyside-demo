@@ -31,7 +31,7 @@ class Base(DeclarativeBase):
     pass
 
 
-SQLITE_FILE_NAME: str = "sqlite:///local.db"
+SQLITE_FILE_NAME: str = "local.db"
 
 
 class SyncStatus(str, PyEnum):
@@ -61,7 +61,7 @@ class Item(Base):
 
 class Database:
     def __init__(self):
-        self.local_engine = create_engine(SQLITE_FILE_NAME)
+        self.local_engine = create_engine(f"sqlite:///{SQLITE_FILE_NAME}")
         Base.metadata.create_all(self.local_engine)
         self.Session = sessionmaker(bind=self.local_engine)
 
