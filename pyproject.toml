@@ -27,6 +27,12 @@ classifiers = [
     "Topic :: Scientific/Engineering :: GIS",
     "Topic :: Software Development :: Libraries :: Python Modules"
 ]
+exclude = [
+    "pyside_demo/pyside_demo.pyproject",
+    "pyside_demo/resources/*.ui",
+    "pyside_demo/resources/*.qrc"
+]
+
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
