@@ -9,9 +9,29 @@
 This application is a PySide6-based GUI that demonstrates an offline-first approach with PostgreSQL synchronization capabilities.
 It allows users to manage items locally and synchronize them with a remote PostgreSQL database when an internet connection is available.
 
-* [Introduction](docs/introduction.md)
-* [Installation](docs/installation.md)
-* [Usage](docs/usage.md)
-* [Data](docs/data.md)
-* [Contributing](docs/contributing.md)
-* [Changelog](changelog.md)
+* [Introduction](https://deltodon.github.io/pyside-demo/introduction.html)
+* [Installation](https://deltodon.github.io/pyside-demo/installation.html)
+* [Usage](https://deltodon.github.io/pyside-demo/usage.html)
+* [Data](https://deltodon.github.io/pyside-demo/data.html)
+* [Contributing](https://deltodon.github.io/pyside-demo/contributing.html)
+* [Changelog](https://deltodon.github.io/pyside-demo/changelog.html)
+
+### Quick Start
+
+install the package using pip
+
+```bash
+pip install pyside-demo
+```
+
+run the package
+
+```bash
+python -m pyside_demo
+```
+
+if you are using Poetry install with
+
+```bash
+poetry add pyside-demo
+```

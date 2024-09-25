@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyside-demo"
-version = "0.1.0"
+version = "0.1.2"
 description = "Offline-first GUI application with PostgreSQL synchronization"
 repository = "https://github.com/jiriklic/pyside-demo"
 authors = ["Jiri Klic <web@jiriklic.com>"]
@@ -27,6 +27,12 @@ classifiers = [
     "Topic :: Scientific/Engineering :: GIS",
     "Topic :: Software Development :: Libraries :: Python Modules"
 ]
+exclude = [
+    "pyside_demo/pyside_demo.pyproject",
+    "pyside_demo/resources/*.ui",
+    "pyside_demo/resources/*.qrc"
+]
+
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
