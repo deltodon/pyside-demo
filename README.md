@@ -30,8 +30,14 @@ run the package
 python -m pyside_demo
 ```
 
-if you are using Poetry install with
+if you are using Poetry, install the package  with
 
 ```bash
 poetry add pyside-demo
+```
+
+and then run
+
+```bash
+poetry run python pyside_demo
 ```
