@@ -131,13 +131,18 @@ class Database:
             print("Sync with PostgreSQL completed successfully")
 
     def resolve_conflict(self, item_id, resolution_choice):
+        # TODO: make this functionality more robust
         session = self.Session()
+        # pg_item = get_pg_item()
         item = session.query(Item).filter_by(id=item_id).first()
         if item and item.sync_status == SyncStatus.CONFLICT:
             if resolution_choice == "local":
                 item.sync_status = SyncStatus.MODIFIED
+                # new_item = item
+                # new_item.version = max(pg_item.version + 1, item.version)
+                # update_pg_item(item)
             elif resolution_choice == "remote":
-                # TODO: Fetch the latest version
+                # Fetch the latest version
                 # from PostgreSQL and update local
                 pass
             session.commit()
