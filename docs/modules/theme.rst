@@ -1,5 +1,5 @@
-GUI Module
-==========
+Theme Module
+=============
 
 This module contains the QSS color theme.
 
@@ -7,7 +7,6 @@ This module contains the QSS color theme.
    :members:
    :undoc-members:
    :show-inheritance:
-   :no-index:
 
 Submodules
 ----------
