@@ -7,7 +7,9 @@ from pyside_demo.gui.home import HomeWidget
 from pyside_demo.gui.map import MapWidget
 from pyside_demo.gui.settings import SettingsWidget
 from pyside_demo.gui.sidebar import SideBar
+from pyside_demo.gui.table import TableWidget
 from pyside_demo.gui.top_menu import create_menu_bar
+from pyside_demo.model.table import TableModel
 from pyside_demo.resources import rc_resources  # noqa: F401
 from pyside_demo.resources.ui_mainwindow import Ui_MainWindow
 
@@ -37,6 +39,7 @@ class MainWindow(QMainWindow):
         sidebar_button_functions = [
             ("Home", self.show_home),
             ("Data", self.show_data),
+            ("Table", self.show_table),
             ("Map", self.show_map),
             ("Graph", self.show_graph),
             # ("New File", self.new_file),
@@ -49,6 +52,9 @@ class MainWindow(QMainWindow):
         for label, func in sidebar_button_functions:
             self.sidebar.on_click(label, func)
 
+        # Create table model
+        self.table_model = TableModel()
+
         # Create content area
         self.content_area = QStackedWidget()
 
@@ -57,8 +63,12 @@ class MainWindow(QMainWindow):
         self.content_area.addWidget(self.home_dashboard)
 
         # Create data widget
-        self.data_widget = DataWidget()
+        self.data_widget = DataWidget(self.table_model)
         self.content_area.addWidget(self.data_widget)
+
+        # Create table widget
+        self.table_widget = TableWidget(self.table_model)
+        self.content_area.addWidget(self.table_widget)
 
         # Create map widget
         self.map_widget = MapWidget()
@@ -84,6 +94,9 @@ class MainWindow(QMainWindow):
 
     def show_data(self):
         self.content_area.setCurrentWidget(self.data_widget)
+
+    def show_table(self):
+        self.content_area.setCurrentWidget(self.table_widget)
 
     def show_map(self):
         self.content_area.setCurrentWidget(self.map_widget)

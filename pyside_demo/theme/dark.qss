@@ -26,7 +26,7 @@ QMenu::item:selected {
     background-color: #3E3E42;
 }
 
-QWidget QLabel {
+QLabel {
     color: white;
 }
 
@@ -118,6 +118,10 @@ QSlider::handle:horizontal {
     background-color: #2a82da;
 }
 
+QRadioButton {
+    color: white;
+}
+
 QCheckBox::indicator,
 QRadioButton::indicator {
     border: 1px solid #232323;
@@ -127,4 +131,71 @@ QRadioButton::indicator {
 QCheckBox::indicator:checked,
 QRadioButton::indicator:checked {
     background-color: #2a82da;
+}
+
+QTableView {
+    background-color: #1E1E1E;
+    alternate-background-color: #252526;
+    color: #FFFFFF;
+    gridline-color: #3E3E42;
+    selection-background-color: #2a82da;
+    selection-color: #FFFFFF;
+    border: 1px solid #3E3E42;
+}
+
+QTableView QHeaderView {
+    background-color: #252526;
+    color: #FFFFFF;
+}
+
+QTableView QHeaderView::section {
+    background-color: #252526;
+    color: #FFFFFF;
+    padding: 5px;
+    border: 1px solid #3E3E42;
+}
+
+QTableView QHeaderView::section:checked {
+    background-color: #2a82da;
+}
+
+QTableView::item {
+    padding: 5px;
+}
+
+QTableView::item:selected {
+    background-color: #2a82da;
+}
+
+QTableView::item:focus {
+    background-color: #3E3E42;
+    color: #FFFFFF;
+}
+
+/* Style for the corner widget */
+QTableView QTableCornerButton::section {
+    background-color: #252526;
+    border: 1px solid #3E3E42;
+}
+
+/* Ensure all parts of the header have the same style */
+QHeaderView::section {
+    background-color: #252526;
+    color: #FFFFFF;
+    padding: 5px;
+    border: 1px solid #3E3E42;
+}
+
+/* Style for the vertical header */
+QHeaderView::section:vertical {
+    background-color: #252526;
+}
+
+/* Style for the horizontal header */
+QHeaderView::section:horizontal {
+    background-color: #252526;
+}
+
+QDialog {
+    background-color: #252526;
 }

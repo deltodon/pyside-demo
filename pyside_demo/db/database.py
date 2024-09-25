@@ -1,7 +1,8 @@
+import os
 import uuid
 from datetime import datetime
 from enum import Enum as PyEnum
-from typing import Any
+from typing import Any, Optional
 
 import psycopg2
 import requests
@@ -13,6 +14,7 @@ from sqlalchemy.orm import DeclarativeBase, sessionmaker
 from pyside_demo.db.sql import (
     SQL_CHECK_FOR_CONFLICTS,
     SQL_CREATE_TABLE,
+    SQL_DELETE_ITEM,
     SQL_FETCH_ITEMS,
     SQL_UPDATE_OR_INSERT_ITEM,
 )
@@ -30,7 +32,7 @@ class Base(DeclarativeBase):
     pass
 
 
-SQLITE_FILE_NAME: str = "sqlite:///local.db"
+SQLITE_FILE_NAME: str = "local.db"
 
 
 class SyncStatus(str, PyEnum):
@@ -60,7 +62,7 @@ class Item(Base):
 
 class Database:
     def __init__(self):
-        self.local_engine = create_engine(SQLITE_FILE_NAME)
+        self.local_engine = create_engine(f"sqlite:///{SQLITE_FILE_NAME}")
         Base.metadata.create_all(self.local_engine)
         self.Session = sessionmaker(bind=self.local_engine)
 
@@ -79,6 +81,14 @@ class Database:
             item.description = description
             item.version += 1
             item.sync_status = SyncStatus.MODIFIED
+            session.commit()
+        session.close()
+
+    def set_conflict(self, item_id):
+        session = self.Session()
+        item = session.query(Item).filter_by(id=item_id).first()
+        if item:
+            item.sync_status = SyncStatus.CONFLICT
             session.commit()
         session.close()
 
@@ -107,119 +117,111 @@ class Database:
         except requests.ConnectionError:
             return False
 
-    def sync_with_postgresql(self, host, database, user, password):
+    def sync_with_postgresql(self):
         if not self.is_online():
             print("Not online, can't sync with PostgreSQL")
             return
 
-        conn = None
-        cur = None
-        try:
-            conn = psycopg2.connect(
-                host=host, database=database, user=user, password=password
-            )
-            cur = conn.cursor()
+        with self._get_pg_connection() as conn:
+            with conn.cursor() as cur:
+                self._create_table_if_not_exists(cur)
+                self._sync_local_to_remote(cur)
+                self._sync_remote_to_local(cur)
 
-            # Create table if not exists
-            cur.execute(SQL_CREATE_TABLE)
+            print("Sync with PostgreSQL completed successfully")
 
-            # Get local items
-            local_items = self.get_items()
+    def resolve_conflict(self, item_id, resolution_choice):
+        # TODO: make this functionality more robust
+        session = self.Session()
+        # pg_item = get_pg_item()
+        item = session.query(Item).filter_by(id=item_id).first()
+        if item and item.sync_status == SyncStatus.CONFLICT:
+            if resolution_choice == "local":
+                item.sync_status = SyncStatus.MODIFIED
+                # new_item = item
+                # new_item.version = max(pg_item.version + 1, item.version)
+                # update_pg_item(item)
+            elif resolution_choice == "remote":
+                # Fetch the latest version
+                # from PostgreSQL and update local
+                pass
+            session.commit()
+        session.close()
 
-            # Synchronize items
-            for item in local_items:
-                if item.sync_status == SyncStatus.MODIFIED:
-                    # Check for conflicts
-                    cur.execute(SQL_CHECK_FOR_CONFLICTS, (item.id,))
-                    result = cur.fetchone()
+    def _get_pg_connection(self):
+        pg_host: Optional[str] = os.getenv("DB_HOST")
+        pg_database: Optional[str] = os.getenv("DB_NAME")
+        pg_user: Optional[str] = os.getenv("DB_USER")
+        pg_password: Optional[str] = os.getenv("DB_PASSWORD")
 
-                    if result and result[0] > item.version:
-                        # Conflict detected
-                        item.sync_status = SyncStatus.CONFLICT
-                    else:
-                        # Update or insert item
-                        cur.execute(
-                            SQL_UPDATE_OR_INSERT_ITEM,
-                            (
-                                item.id,
-                                item.name,
-                                item.description,
-                                item.created_at,
-                                item.updated_at,
-                                item.version,
-                                "synced",
-                            ),
-                        )
-                        item.sync_status = SyncStatus.SYNCED
+        return psycopg2.connect(
+            host=pg_host,
+            database=pg_database,
+            user=pg_user,
+            password=pg_password,
+        )
 
-                elif item.sync_status == SyncStatus.DELETED:
-                    # Delete item from PostgreSQL
-                    cur.execute(
-                        """
-                        DELETE FROM items WHERE id = %s
-                    """,
-                        (item.id,),
-                    )
+    def _create_table_if_not_exists(self, cur):
+        cur.execute(SQL_CREATE_TABLE)
 
-            # Fetch items from PostgreSQL that are not in local database
-            cur.execute(SQL_FETCH_ITEMS)
-            pg_items = cur.fetchall()
+    def _sync_local_to_remote(self, cur):
+        local_items = self.get_items()
+        for item in local_items:
+            if item.sync_status == SyncStatus.MODIFIED:
+                self._handle_modified_item(cur, item)
+            elif item.sync_status == SyncStatus.DELETED:
+                self._handle_deleted_item(cur, item)
 
-            session = self.Session()
+    def _handle_modified_item(self, cur, item):
+        if self._check_for_conflict(cur, item):
+            self.set_conflict(item.id)
+        else:
+            self._update_or_insert_item(cur, item)
+            item.sync_status = SyncStatus.SYNCED
+
+    def _check_for_conflict(self, cur, item):
+        cur.execute(SQL_CHECK_FOR_CONFLICTS, (item.id,))
+        result = cur.fetchone()
+        return result and result[0] > item.version
+
+    def _update_or_insert_item(self, cur, item):
+        cur.execute(
+            SQL_UPDATE_OR_INSERT_ITEM,
+            (
+                item.id,
+                item.name,
+                item.description,
+                item.created_at,
+                item.updated_at,
+                item.version,
+                "synced",
+            ),
+        )
+
+    def _handle_deleted_item(self, cur, item):
+        cur.execute(SQL_DELETE_ITEM, (item.id,))
+
+    def _sync_remote_to_local(self, cur):
+        cur.execute(SQL_FETCH_ITEMS)
+        pg_items = cur.fetchall()
+
+        with self.Session() as session:
             for pg_item in pg_items:
                 local_item = (
                     session.query(Item).filter_by(id=pg_item[0]).first()
                 )
                 if not local_item:
-                    new_item = Item(
-                        id=pg_item[0],
-                        name=pg_item[1],
-                        description=pg_item[2],
-                        created_at=pg_item[3],
-                        updated_at=pg_item[4],
-                        version=pg_item[5],
-                        sync_status=SyncStatus.SYNCED,
-                    )
-                    session.add(new_item)
-
+                    self._add_remote_item_to_local(session, pg_item)
             session.commit()
-            session.close()
 
-            print("Sync with PostgreSQL completed successfully")
-
-        except Exception as e:
-            print(f"Error syncing with PostgreSQL: {e}")
-            # Re-raise the exception to ensure
-            # the test fails if an error occurs
-            raise
-
-        finally:
-            if conn:
-                if cur:
-                    cur.close()
-                # Moved the commit here to ensure it's always called
-                conn.commit()
-                conn.close()
-
-    def resolve_conflict(self, item_id, resolution_choice):
-        session = self.Session()
-        item = session.query(Item).filter_by(id=item_id).first()
-        if item and item.sync_status == SyncStatus.CONFLICT:
-            if resolution_choice == "local":
-                item.sync_status = SyncStatus.MODIFIED
-            elif resolution_choice == "remote":
-                # Fetch the latest version from PostgreSQL and update local
-                # This part would require a connection to PostgreSQL
-                pass
-            session.commit()
-        session.close()
-
-
-# Usage example:
-# db = Database()
-# db.add_item("Test Item", "This is a test item")
-# items = db.get_items()
-# for item in items:
-#     print(f"Item: {item.name}, Description: {item.description}, Status: {item.sync_status}")  # noqa: E501
-# db.sync_with_postgresql("localhost", "your_db", "your_user", "your_password")
-# db.resolve_conflict(item_id, 'local')  # or 'remote'
+    def _add_remote_item_to_local(self, session, pg_item):
+        new_item = Item(
+            id=pg_item[0],
+            name=pg_item[1],
+            description=pg_item[2],
+            created_at=pg_item[3],
+            updated_at=pg_item[4],
+            version=pg_item[5],
+            sync_status=SyncStatus.SYNCED,
+        )
+        session.add(new_item)

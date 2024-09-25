@@ -20,7 +20,11 @@ class ConflictResolutionDialog(QDialog):
         layout = QVBoxLayout()
 
         layout.addWidget(
-            QLabel(f"Conflict detected for item: {self.item.name}")
+            QLabel(
+                "Conflict detected for item: {}".format(
+                    self.item.get("name", "UNKNOWN")
+                )
+            )
         )
         layout.addWidget(QLabel("Choose resolution:"))
 

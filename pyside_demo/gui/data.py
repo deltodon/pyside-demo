@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import (  # QLabel,
+from PySide6.QtWidgets import (
     QHBoxLayout,
     QLineEdit,
     QListWidget,
@@ -11,16 +11,14 @@ from PySide6.QtWidgets import (  # QLabel,
     QWidget,
 )
 
-from pyside_demo.db.database import Database, Item, SyncStatus
 from pyside_demo.gui.dialog import ConflictResolutionDialog
+from pyside_demo.model.table import TableModel
 
 
 class DataWidget(QWidget):
-    def __init__(
-        self,
-    ):
+    def __init__(self, model: TableModel):
         super().__init__()
-        self.db = Database()
+        self.model = model
 
         self.main_layout = QHBoxLayout(self)
 
@@ -60,12 +58,12 @@ class DataWidget(QWidget):
 
         if name and description:
             if self.add_edit_button.text() == "Add Item":
-                self.db.add_item(name, description)
+                self.model.add_item(name, description)
             else:
                 selected_items = self.item_list.selectedItems()
                 if selected_items:
                     item_id = selected_items[0].data(Qt.ItemDataRole.UserRole)
-                    self.db.update_item(item_id, name, description)
+                    self.model.update_item(item_id, name, description)
 
             self.name_input.clear()
             self.description_input.clear()
@@ -78,33 +76,24 @@ class DataWidget(QWidget):
 
     def load_items(self):
         self.item_list.clear()
-        items = self.db.get_items()
+        items = self.model.get_items()
         for item in items:
             list_item = QListWidgetItem(
-                f"{item.name} ({item.sync_status.value})"
+                f"{item['name']} ({item['sync_status']})"
             )
-            list_item.setData(Qt.ItemDataRole.UserRole, item.id)
+            list_item.setData(Qt.ItemDataRole.UserRole, item["id"])
             self.item_list.addItem(list_item)
 
     def load_item(self, item):
         item_id = item.data(Qt.ItemDataRole.UserRole)
-        session = self.db.Session()
-        db_item = session.query(Item).filter_by(id=item_id).first()
+        db_item = self.model.get_item_by_id(item_id)
         if db_item:
-            self.name_input.setText(str(db_item.name))
-            self.description_input.setPlainText(str(db_item.description))
+            self.name_input.setText(str(db_item["name"]))
+            self.description_input.setPlainText(str(db_item["description"]))
             self.add_edit_button.setText("Update Item")
-        session.close()
 
     def sync_with_postgresql(self):
-        # In a real application, you would want to get these
-        # from a configuration file or environment variables
-        host = "localhost"
-        database = "your_database"
-        user = "your_username"
-        password = "your_password"
-
-        self.db.sync_with_postgresql(host, database, user, password)
+        self.model.sync_with_postgresql()
         self.resolve_conflicts()
         self.load_items()
         QMessageBox.information(
@@ -114,17 +103,10 @@ class DataWidget(QWidget):
         )
 
     def resolve_conflicts(self):
-        session = self.db.Session()
-        conflict_items = (
-            session.query(Item)
-            .filter_by(sync_status=SyncStatus.CONFLICT)
-            .all()
-        )
+        conflict_items = self.model.get_conflict_items()
 
         for item in conflict_items:
             dialog = ConflictResolutionDialog(item)
             if dialog.exec_():
                 resolution = dialog.get_resolution()
-                self.db.resolve_conflict(item.id, resolution)
-
-        session.close()
+                self.model.resolve_conflict(item["id"], resolution)
