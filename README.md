@@ -15,3 +15,23 @@ It allows users to manage items locally and synchronize them with a remote Postg
 * [Data](https://deltodon.github.io/pyside-demo/data.html)
 * [Contributing](https://deltodon.github.io/pyside-demo/contributing.html)
 * [Changelog](https://deltodon.github.io/pyside-demo/changelog.html)
+
+### Quick Start
+
+install the package using pip
+
+```bash
+pip install pyside-demo
+```
+
+run the package
+
+```bash
+python -m pyside_demo
+```
+
+if you are using Poetry install with
+
+```bash
+poetry add pyside-demo
+```

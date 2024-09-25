@@ -5,8 +5,8 @@ on:
     types:
       - published
   # uncomment this during debugging
-  pull_request:
-    branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
 
   # To run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -44,7 +44,7 @@ jobs:
         path: dist/
 
 
-  publish-to-testpypi:
+  testpypi:
     name: Publish the distribution to TestPyPI
     needs:
     - build
@@ -66,3 +66,44 @@ jobs:
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         repository-url: https://test.pypi.org/legacy/
+
+  testpypi-qa:
+    name: Test package installation from Test PyPI
+    needs:
+    - build
+    - testpypi
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out the code
+      uses: actions/checkout@v4.1.1
+    - name: Set up Python
+      uses: actions/setup-python@v5.1.0
+      with:
+        python-version: "3.10"
+    - name: Test package installation from Test PyPI
+      run: |
+        pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple pyside-demo
+        python -c "import pyside-demo; print(pyside-demo.__version__)"
+
+  pypi:
+    name: Publish the distribution to PyPI
+    needs:
+    - build
+    - testpypi
+    - testpypi-qa
+    runs-on: ubuntu-latest
+
+    environment:
+      name: pypi
+
+    permissions:
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
+
+    steps:
+    - name: Download all the dists
+      uses: actions/download-artifact@v4.1.8
+      with:
+        name: python-package-distributions
+        path: dist/
+    - name: Publish distribution to TestPyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
