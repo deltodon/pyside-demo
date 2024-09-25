@@ -26,7 +26,7 @@ jobs:
       with:
         python-version: "3.10"
     - name: Install Poetry
-      uses: snok/install-poetry@v1
+      uses: snok/install-poetry@v1.4.1
       with:
         version: ${{ env.POETRY_VERSION }}
         virtualenvs-create: true
@@ -74,8 +74,6 @@ jobs:
     - testpypi
     runs-on: ubuntu-latest
     steps:
-    - name: Check out the code
-      uses: actions/checkout@v4.1.1
     - name: Set up Python
       uses: actions/setup-python@v5.1.0
       with:
