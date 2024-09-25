@@ -9,6 +9,10 @@
 This application is a PySide6-based GUI that demonstrates an offline-first approach with PostgreSQL synchronization capabilities.
 It allows users to manage items locally and synchronize them with a remote PostgreSQL database when an internet connection is available.
 
+It uses folium and pyqtgraph for interactive graph and geospatial visualisation.
+
+![PySide Demo Animation](https://deltodon.github.io/pyside-demo/_images/pyside-demo-anim.gif)
+
 * [Introduction](https://deltodon.github.io/pyside-demo/introduction.html)
 * [Installation](https://deltodon.github.io/pyside-demo/installation.html)
 * [Usage](https://deltodon.github.io/pyside-demo/usage.html)
@@ -41,3 +45,15 @@ and then run
 ```bash
 poetry run python pyside_demo
 ```
+
+### Features
+
+* Offline-first architecture
+* Local data storage in SQLite
+* PySide6 based GUI
+* PostgreSQL synchronization
+* Interactive Graph visualisation
+* Interactive Geospatial data visualisation
+* Custom QSS colour theme
+* Cross-platform support
+* Model View Controller structure (MVC)

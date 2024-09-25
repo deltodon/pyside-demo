@@ -32,6 +32,11 @@ To get started with PySide Demo, follow these steps:
 
 1. Clone the repository
 
+   .. code-block:: bash
+
+      git clone https://github.com/deltodon/pyside-demo.git
+
+      cd pyside-demo
 
 2. Install the project using Poetry:
 
@@ -51,9 +56,14 @@ Features
 --------
 
 - Offline-first architecture
-- PySide6-based GUI
+- Local data storage in SQLite
+- PySide6 based GUI
 - PostgreSQL synchronization
+- Interactive Graph visualisation
+- Interactive Geospatial data visualisation
+- Custom QSS colour theme
 - Cross-platform support
+- Model View Controller structure (MVC)
 
 Indices and tables
 ==================
