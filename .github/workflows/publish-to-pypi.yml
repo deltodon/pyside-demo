@@ -75,7 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Wait for Test PyPI to process the upload
-      run: sleep 10  # Adjust the sleep duration if necessary
+      run: sleep 60  # Adjust the sleep duration if necessary
     - name: Set up Python
       uses: actions/setup-python@v5.1.0
       with:
