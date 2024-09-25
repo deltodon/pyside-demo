@@ -84,11 +84,3 @@ dialog
    :members:
    :undoc-members:
    :show-inheritance:
-
-theme
-^^^^^
-
-.. automodule:: pyside_demo.gui.theme
-   :members:
-   :undoc-members:
-   :show-inheritance:

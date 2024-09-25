@@ -3,6 +3,10 @@ PySide Demo Documentation
 
 Welcome to the PySide Demo documentation. This project demonstrates an offline-first GUI application with PostgreSQL synchronization using PySide6.
 
+.. image:: images/pyside-demo-anim.gif
+   :width: 700
+   :alt: PySide Demo Animation
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
@@ -14,6 +18,7 @@ Welcome to the PySide Demo documentation. This project demonstrates an offline-f
    modules/index
    contributing
    changelog
+   troubleshooting
 
 Introduction
 ------------
@@ -25,13 +30,21 @@ Quick Start
 
 To get started with PySide Demo, follow these steps:
 
-1. Install the project using Poetry:
+1. Clone the repository
+
+   .. code-block:: bash
+
+      git clone https://github.com/deltodon/pyside-demo.git
+
+      cd pyside-demo
+
+2. Install the project using Poetry:
 
    .. code-block:: bash
 
       poetry install
 
-2. Run the application:
+3. Run the application:
 
    .. code-block:: bash
 
@@ -43,9 +56,14 @@ Features
 --------
 
 - Offline-first architecture
-- PySide6-based GUI
+- Local data storage in SQLite
+- PySide6 based GUI
 - PostgreSQL synchronization
-- [Add more features here]
+- Interactive Graph visualisation
+- Interactive Geospatial data visualisation
+- Custom QSS colour theme
+- Cross-platform support
+- Model View Controller structure (MVC)
 
 Indices and tables
 ==================

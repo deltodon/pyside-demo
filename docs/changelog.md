@@ -5,41 +5,31 @@ All notable changes to the PySide Demo project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-### Added
-
-* Initial project setup
-* Basic GUI structure using PySide6
-* Offline-first architecture implementation
-* PostgreSQL synchronization functionality
-
-### Changed
-
-* N/A
-
-### Deprecated
-
-* N/A
-
-### Removed
-
-* N/A
+## [0.1.4] - 2024-09-25
 
 ### Fixed
 
-* N/A
+* Increase wait time in testpypi-qa to 60 seconds
 
-### Security
+## [0.1.3] - 2024-09-25
 
-* N/A
+### Fixed
 
-## [0.1.0] - YYYY-MM-DD
+* Fix testpypi-qa syntax error
+
+## [0.1.2] - 2024-09-25
 
 ### Added
 
 * Initial release of PySide Demo
-* [List key features included in the first release]
+* Init Poetry project
+* Add pre-commit and GitHub CI
+* Add Mypy
+* Sphinx documentation
+* Add pyqtgraph
+* Add qss theme
+* Add table model MVC
+* Add publish-to-pypi workflow
 
 ## [Template for future versions]
 
