@@ -8,7 +8,7 @@ when starting the demo on Ubuntu 20.04 by running
 poetry run python pyside_demo
 ```
 
-I get the following error:
+you may get the following error:
 
 ```bash
 qt.qpa.plugin: From 6.5.0, xcb-cursor0 or libxcb-cursor0 is needed to load the Qt xcb platform plugin.
@@ -19,8 +19,6 @@ Available platform plugins are: minimal, vkkhrdisplay, wayland, eglfs, minimaleg
 
 Aborted (core dumped)
 ```
-
-### Answer
 
 The error message indicates that your system is missing a required library for the Qt xcb platform plugin. To resolve this issue, you need to install the `libxcb-cursor0` package. Here are the steps to fix this problem:
 

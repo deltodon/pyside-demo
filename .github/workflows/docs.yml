@@ -4,8 +4,8 @@ on:
   push:
     branches: [ main ]
   # uncomment this during debugging
-  # pull_request:
-  #   branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
   # To run this workflow manually from the Actions tab
   workflow_dispatch:

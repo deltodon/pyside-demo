@@ -8,6 +8,7 @@ This section provides detailed documentation for the various modules that make u
 
    gui
    db
+   theme
    main
 
 The PySide Demo application is composed of three main modules:
