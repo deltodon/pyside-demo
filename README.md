@@ -11,7 +11,7 @@ It allows users to manage items locally and synchronize them with a remote Postg
 
 It uses folium and pyqtgraph for interactive graph and geospatial visualisation.
 
-![PySide Demo Animation](https://github.com/deltodon/pyside-demo/blob/main/docs/images/pyside-demo-anim.gif)
+![PySide Demo Animation](https://raw.githubusercontent.com/deltodon/pyside-demo/main/docs/images/pyside-demo-anim.gif)
 
 * [Introduction](https://deltodon.github.io/pyside-demo/introduction.html)
 * [Installation](https://deltodon.github.io/pyside-demo/installation.html)
